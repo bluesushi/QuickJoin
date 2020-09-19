@@ -1,0 +1,23 @@
+{
+  "name": "quickjoin",
+  "version": "0.0.1",
+  "description": "A tool to organize online classes and easily join them",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wubberfish/QuickJoin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wubberfish/QuickJoin/issues"
+  },
+  "homepage": "https://github.com/wubberfish/QuickJoin#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
