@@ -1,0 +1,36 @@
+.loginform {
+    /* centering */
+    margin: 0 auto;
+    width: 400px;
+
+    border: 1px solid #CCC;
+    border-radius: 1em;
+    padding: 1em;
+}
+
+.loginlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.userinfo {
+    width: 50%;
+    margin: 0 auto;
+    padding: 2px;
+}
+
+.userinfo label {
+    width: 100%;
+    display: inline-block;
+    text-align: left;
+}
+
+.userinfo input {
+    width: 100%;
+}
+
+.submitbtn {
+    padding: 2px;
+}
