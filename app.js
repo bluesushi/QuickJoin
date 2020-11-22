@@ -10,6 +10,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/login', login)
 app.use('/signup', signup)
 
+app.set('views', './views')
+app.set('view engine', 'ejs')
+
 let port = process.env.PORT || 8080
 
 app.listen(port, () => console.log('Running at ' + port))
