@@ -1,28 +1,32 @@
 body {
+    margin: 0;
     width: 100vw;
     height: 100vh;
     font-family: arial;
+    display: flex;
+    justify-content: center; 
 }
 
 .wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    width: 60%;
 }
 
 .description {
+    flex: 1;
     text-align: center;
+}
+
+.loginsection {
     flex: 1;
 }
 
-.loginarea {
-}
-
 .loginform {
-    border: 2px solid #1e8de3;
-    border-radius: 1em;
     padding: 1em;
+    border-radius: 1em;
+    border: 2px solid rgba(30, 141, 227, 0.7);
     background-color: rgba(123, 188, 237, 0.2);
 }
 
@@ -51,4 +55,30 @@ body {
 
 .submitbtn {
     padding: 2px;
+}
+
+.loginerror {
+    text-align: center;
+    display: block;
+
+    margin-top: 6px;
+    padding: 0.5em;
+
+    font-size: 12px;
+    border-radius: 0.5em;
+    border: 1px solid rgba(252, 32, 3, 0.2);
+    background-color: rgba(252, 82, 3, 0.2);
+}
+
+#closeErrBtn {
+    background: none;
+    border: none;
+}
+
+#closeErrBtn:hover {
+    cursor: pointer; 
+}
+
+#closeErrBtn > img {
+    vertical-align: middle;
 }

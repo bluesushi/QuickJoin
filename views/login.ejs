@@ -27,12 +27,23 @@
                 </ul>
             </form>
             <% if (error) { %>
-                <h2><%= error.message %></h2>
+                <div class="loginerror">
+                    <span>
+                        <%= error.message %>
+                    </span>
+                    <button id="closeErrBtn">
+                        <img 
+                            src="/images/close-outline.svg"
+                            width="12"
+                        />
+                    </button>
+                </div>
             <% } %>
         </div>
     </div>
     <!--
     <a href="/signup">Sign up</a>
     -->
+    <script src="/scripts/login.js"></script>
 </body>
 </html>

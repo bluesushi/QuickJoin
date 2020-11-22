@@ -8,7 +8,7 @@ login.get('/', (req, res) => {
 })
 
 login.post('/userlogin', (req, res, next) => {
-    res.render('login', { error: { message: "incorrect password" }})
+    res.render('login', { error: { message: "Incorrect username or password" }})
     /*
     db.query('SELECT * FROM admin', [], (err, r) => {
 
