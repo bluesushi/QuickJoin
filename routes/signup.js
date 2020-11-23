@@ -3,7 +3,7 @@ const signup = express.Router()
 const path = require('path')
 
 signup.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/../pages/signup.html'))
+    res.sendFile(path.join(__dirname + '/../views/signup.html'))
 })
 
 module.exports = signup
