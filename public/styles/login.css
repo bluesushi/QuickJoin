@@ -1,26 +1,36 @@
+@font-face {
+    font-family: 'roboto';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
 body {
     margin: 0;
     width: 100vw;
     height: 100vh;
-    font-family: arial;
+    font-family: 'roboto';
     display: flex;
-    justify-content: center; 
 }
 
 .wrapper {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    width: 60%;
+    justify-content: space-evenly;
+    width: 100%;
 }
 
 .description {
-    flex: 1;
+    width: 40%;
     text-align: center;
+
+    background-color: rgba(66, 138, 245, 1);
+    color: white;
+    padding: 150px 1em;
+    border-radius: 1em;
 }
 
 .loginsection {
-    flex: 1;
+    width: 40%;
 }
 
 .loginform {
@@ -60,7 +70,9 @@ body {
 .loginerror {
     text-align: center;
     display: block;
+    width: 40%;
 
+    margin: 0 auto;
     margin-top: 6px;
     padding: 0.5em;
 
@@ -81,4 +93,11 @@ body {
 
 #closeErrBtn > img {
     vertical-align: middle;
+}
+
+.signuplink {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 4%;
+    text-align: center;
 }
