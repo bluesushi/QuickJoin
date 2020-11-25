@@ -1,0 +1,51 @@
+@font-face {
+    font-family: 'roboto';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    font-family: 'roboto';
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.signupform {
+    border-radius: 1em;
+    width: 30%;
+
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; 
+}
+
+.signupform > div {
+    padding: 0 1em;
+    height: 60px;
+    width: 90%;
+    margin: 0 auto;
+
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+input {
+    background-color: rgba(176, 176, 176, 0.15);
+    border: solid 1px rgba(104, 104, 104, 0.15);
+    border-radius: 0.3em;
+}
+
+.submitbtn {
+    color: white;
+    border: none;
+    border-radius: 0.3em;
+    background-color: rgba(66, 138, 245, 0.9);
+    height: 65%;
+    font-family: 'roboto';
+}
