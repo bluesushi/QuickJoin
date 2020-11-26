@@ -1,8 +1,8 @@
-import { createPopper } from '@popperjs/core'
-
-const popcorn = document.querySelector('#popcorn')
+/*
+const popcorn = document.querySelector('#email')
 const tooltip = document.querySelector('#tooltip')
 
-createPopper(popcorn, tooltip, {
-    placement: 'top'
+Popper.createPopper(popcorn, tooltip, {
+    placement: 'bottom'
 })
+*/

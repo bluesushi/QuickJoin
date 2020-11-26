@@ -49,3 +49,30 @@ input {
     height: 65%;
     font-family: 'roboto';
 }
+
+/* popover warnings */
+/*
+#tooltip {
+    background-color: #333;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-size: 13px;
+    position: absolute;
+}
+
+#arrow,
+#arrow::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  z-index: -1;
+}
+
+#arrow::before {
+  content: '';
+  transform: rotate(45deg);
+  background: #333;
+  bottom: -8px;
+}
+*/

@@ -11,39 +11,20 @@
         <form class="signupform" method="post" action="/signup/usersignup">
             <div>
                 <label for="email">Email address</label>
-                <input type="email" id="email" required>
-                <div id="tooltip" role="tooltip">I'm a tooltip</div>
+                <input name="email" type="email" id="email" required>
             </div>
             <div>
                 <label for="password">Password</label>
-                <input type="password" id="password" required>
+                <input name="password" type="password" id="password" required>
             </div>
             <div>
-                <button class="submitbtn">Create account</button>
+                <button type="submit" class="submitbtn">Create account</button>
             </div>
         </form>
         <a href="/login">Log in</a>
     </div>
-    <style>
-  #tooltip {
-    background-color: #333;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 13px;
-  }
-</style>
 
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-<script>
-  const button = document.querySelector('#email');
-  const tooltip = document.querySelector('#tooltip');
-
-  // Pass the button, the tooltip, and some options, and Popper will do the
-  // magic positioning for you:
-  Popper.createPopper(button, tooltip, {
-    placement: 'bottom-start',
-  });
-</script>
+    <script src="https://unpkg.com/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="/scripts/signup.js" type="module"></script>
 </body>
 </html>

@@ -5,13 +5,19 @@ const login = require('./routes/login.js')
 const signup = require('./routes/signup.js')
 
 app.use(express.static('public'))
-app.use(express.json())
+app.use(express.json()) // check later
 app.use(express.urlencoded({ extended: false }))
 app.use('/login', login)
 app.use('/signup', signup)
 
 app.set('views', './views')
 app.set('view engine', 'ejs')
+
+/*
+app.use((err, req, res, next) => {
+
+})
+*/
 
 let port = process.env.PORT || 8080
 
