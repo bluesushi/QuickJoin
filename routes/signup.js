@@ -11,6 +11,20 @@ signup.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/../views/signup.html'))
 })
 
+signup.get('/confirmaccount/:randomToken', async (req, res, next) => {
+    try {
+        const { rows } = await db.query('UPDATE users SET confirmed = TRUE ' +
+            'WHERE confirmation_code = $1 RETURNING email', [req.params.randomToken])
+        if (rows.length > 0) {
+            return res.send('account has been confirmed, you may sign in now')
+        } else {
+            return res.send('invalid confirmation code')
+        }
+    } catch(err) {
+        next(err)
+    }
+})
+
 signup.post('/usersignup', async (req, res, next) => {
     const { email, password } = req.body
 
@@ -37,30 +51,18 @@ function User(email, hash, id) {
 }
 
 async function checkDuplicateUser(email) {
-    try {
-        const { rows } = await db.query('SELECT email FROM users WHERE email = $1', [email])
-        return rows.length > 0
-    } catch(err) {
-        throw err
-    }
+    const { rows } = await db.query('SELECT email FROM users WHERE email = $1', [email])
+    return rows.length > 0
 }
 
 async function genHash(password) {
-    try {
-        const salt = await bcrypt.genSalt()
-        const hashedPassword = await bcrypt.hash(password, salt)
-        return hashedPassword
-    } catch(err) {
-        throw err
-    }
+    const salt = await bcrypt.genSalt()
+    const hashedPassword = await bcrypt.hash(password, salt)
+    return hashedPassword
 }
 
 async function insertUser({ email, hash, id }) {
-    try {
-        await db.query('INSERT INTO users(email, password, confirmation_code) VALUES($1, $2, $3)', [email, hash, id])
-    } catch(err) {
-        throw err
-    }
+    await db.query('INSERT INTO users(email, password, confirmation_code) VALUES($1, $2, $3)', [email, hash, id])
 }
 
 module.exports = signup

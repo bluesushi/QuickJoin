@@ -16,7 +16,14 @@ async function sendConfirmation({ email, id }) {
             to: email,
             subject: "Quick Join confirmation email",
             html: `
-                <h1>${id}</h1>
+                <p>
+                    <a href="http://localhost:8080/signup/confirmaccount/${id}"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                    >
+                        Confirm account
+                    </a>
+                </p>
             `
         })
     } catch(err) {
