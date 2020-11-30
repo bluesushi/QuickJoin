@@ -2,7 +2,7 @@ const express = require('express')
 const signup = express.Router()
 const path = require('path')
 const bcrypt = require('bcrypt')
-const nanoid = require('nanoid').nanoid
+const { nanoid } = require('nanoid')
 
 const db = require('../db/index.js')
 const mail = require('../email/index.js')
@@ -36,6 +36,7 @@ signup.post('/usersignup', async (req, res, next) => {
         const hash = await genHash(password)
         const randomToken = nanoid()
         const user = new User(email, hash, randomToken)
+
         await insertUser(user)
         await mail.sendConfirmation(user)
         res.send('check email for confirmation')

@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/styles/dashboard.css" />
+</head>
+<body>
+    <header class="dashboard_header">
+        <div class="header_logo">
+            <h1>Quick Join</h1>
+        </div>
+        <div class="toolarea">
+            <button class="settings_button" aria-describedby="tooltip">
+                <img src="/images/settings-outline.svg">
+            </button>
+            <div class="settings-box" id="tooltip" role="tooltip">
+                <div>
+                    Signed in as <strong>kaanturhans@gmail.com</strong>
+                </div>
+                <div id="arrow" data-popper-arrow></div>
+            </div>
+        </div>
+    </header>
+
+    <script src="https://unpkg.com/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="/scripts/dashboard.js"></script>
+</body>
+</html>
