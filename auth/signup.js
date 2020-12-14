@@ -3,11 +3,13 @@ const signup = express.Router()
 const path = require('path')
 const bcrypt = require('bcrypt')
 const { nanoid } = require('nanoid')
+const { v4: uuidv4 } = require('uuid')
 
 const db = require('../db/index.js')
 const mail = require('../email/index.js')
+const auth = require('./auth.js')
 
-signup.get('/', (req, res) => {
+signup.get('/signup', auth.redirectDashboard, (req, res) => {
     res.sendFile(path.join(__dirname + '/../views/signup.html'))
 })
 
@@ -35,7 +37,7 @@ signup.post('/usersignup', async (req, res, next) => {
 
         const hash = await genHash(password)
         const randomToken = nanoid()
-        const user = new User(email, hash, randomToken)
+        const user = new User(email, hash, randomToken, uuidv4())
 
         await insertUser(user)
         await mail.sendConfirmation(user)
@@ -45,10 +47,17 @@ signup.post('/usersignup', async (req, res, next) => {
     }
 })
 
-function User(email, hash, id) {
+signup.get('/usersignout', async (req, res, next) => {
+    req.session.destroy(function (err) {
+        res.redirect('/login')
+    })
+})
+
+function User(email, hash, code, userID) {
     this.email = email
     this.hash = hash
-    this.id = id
+    this.code = code 
+    this.userID = userID
 }
 
 async function checkDuplicateUser(email) {
@@ -62,8 +71,8 @@ async function genHash(password) {
     return hashedPassword
 }
 
-async function insertUser({ email, hash, id }) {
-    await db.query('INSERT INTO users(email, password, confirmation_code) VALUES($1, $2, $3)', [email, hash, id])
+async function insertUser({ email, hash, code, userID }) {
+    await db.query('INSERT INTO users(email, password, confirmation_code, user_id) VALUES($1, $2, $3, $4)', [email, hash, code, userID])
 }
 
 module.exports = signup

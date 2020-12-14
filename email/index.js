@@ -9,7 +9,7 @@ let transporter = nodemailer.createTransport({
     }
 })
 
-async function sendConfirmation({ email, id }) {
+async function sendConfirmation({ email, code }) {
     try {
         await transporter.sendMail({
             from: process.env.EMAILUSERNAME,
@@ -17,7 +17,7 @@ async function sendConfirmation({ email, id }) {
             subject: "Quick Join confirmation email",
             html: `
                 <p>
-                    <a href="http://localhost:8080/signup/confirmaccount/${id}"
+                    <a href="http://localhost:8080/signup/confirmaccount/${code}"
                         target="_blank"
                         rel="noreferrer noopener"
                     >

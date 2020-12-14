@@ -1,29 +1,7 @@
 const button = document.querySelector('.settings_button')
 const tooltip = document.querySelector('#tooltip')
-/*
-let popperInstance = null
-
-function create() {
-    popperInstance = Popper.createPopper(button, tooltip, {
-        placement: 'bottom',
-        modifiers: [
-            {
-                name: 'offset',
-                options: {
-                    offset: [0, 8]
-                }
-            }
-        ]
-    })
-}
-
-function destroy() {
-    if (popperInstance) {        // even though we call when we know the popper is
-	    popperInstance.destroy() // there safer to have this check
-	    popperInstance = null
-    }
-}
-*/
+const settingsPageLink = document.querySelector('#settings-page-link')
+const signoutButton = document.querySelector('.signout-button')
 
 button.addEventListener('click', () => {
     if (tooltip.getAttribute('data-show')) {
@@ -31,4 +9,18 @@ button.addEventListener('click', () => {
     } else {
         tooltip.setAttribute('data-show', 't')
     }
+})
+
+signoutButton.addEventListener('click', () => window.location.href = "/usersignout")
+settingsPageLink.addEventListener('click', () => window.location.href = "/settings")
+
+window.addEventListener('load', () => {
+    let req = new XMLHttpRequest()
+
+    req.addEventListener('load', () => {
+        console.log(JSON.parse(req.response))
+    })
+
+    req.open('GET', '/userLinks')
+    req.send()
 })

@@ -16,12 +16,16 @@
             <div class="settings-box" id="tooltip" role="tooltip">
                 <div class="settings-options">
                     <div>
-                        Signed in as <strong>kaanturhans@gmail.com</strong>
+                        <span>Signed in as </span>
+                        <br>
+                        <% if (user) { %>
+                            <strong><%= user.email %></strong>
+                        <% } %>
                     </div>
-                    <div>
-                        Settings
+                    <div id="settings-page-link">
+                        <span>Settings</span>
                     </div>
-                    <div>
+                    <div class="signout-button">
                         Sign out
                     </div>
                 </div>
@@ -29,6 +33,9 @@
             </div>
         </div>
     </header>
+
+    <div class="link-container">
+    </div>
 
     <script src="https://unpkg.com/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="/scripts/dashboard.js"></script>
