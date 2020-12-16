@@ -10,8 +10,11 @@
             <h1>Quick Join</h1>
         </div>
         <div class="toolarea">
+            <button class="add_link_button">
+                <img src="/images/add-outline.svg">
+            </button>
             <button class="settings_button" aria-describedby="tooltip">
-                <img src="/images/settings-outline.svg">
+                <img id="settings-button-image" src="/images/settings-outline.svg">
             </button>
             <div class="settings-box" id="tooltip" role="tooltip">
                 <div class="settings-options">
@@ -35,6 +38,32 @@
     </header>
 
     <div class="link-container">
+    </div>
+
+    <div class="add_link_modal">
+        <div class="modal-content">
+            <h3 style="margin:0;">Add a link</h3>
+
+            <div class="modal-input">
+                <label for="meeting-url">Url</label>
+                <input type="url" id="meeting-url" required>
+            </div>
+
+            <div class="modal-input">
+                <label for="meeting-time">Meeting Time</label>
+                <input type="time" id="meeting-time">
+            </div>
+
+            <div class="modal-input">
+                <label for="meeting-name">Meeting Name</label>
+                <input type="text" id="meeting-name" maxlength="30">
+            </div>
+
+            <div class="modal-buttons">
+                <button class="add-link-button">Submit</button>
+                <button class="cancel-modal">Cancel</button>
+            </div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

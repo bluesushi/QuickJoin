@@ -5,7 +5,8 @@ const pgSession = require('connect-pg-simple')(session)
 
 const login = require('./auth/login.js')
 const signup = require('./auth/signup.js')
-const home = require('./data/index.js')
+const home = require('./dashboard/home.js')
+const settings = require('./dashboard/settings.js')
 const db = require('./db/index.js')
 
 app.use(express.static('public'))
@@ -36,6 +37,7 @@ app.use(session(sess))
 app.use(login)
 app.use(signup)
 app.use(home)
+app.use(settings)
 
 app.set('views', './views')
 app.set('view engine', 'ejs')

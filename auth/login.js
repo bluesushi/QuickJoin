@@ -3,9 +3,9 @@ const login = express.Router()
 const path = require('path')
 const bcrypt = require('bcrypt')
 const db = require('../db/index.js')
-const auth = require('./auth.js')
+const { redirectDashboard } = require('./auth.js')
 
-login.get('/login', auth.redirectDashboard, async (req, res) => {
+login.get('/login', redirectDashboard, async (req, res) => {
     return res.render('login', { error: null })
 })
 
@@ -20,7 +20,7 @@ login.post('/userlogin', async (req, res, next) => {
 
         if (await bcrypt.compare(password, rows[0].password) && rows[0].confirmed) {
             req.session.userID = rows[0].user_id 
-            return res.render('dashboard', { user: { email: email }})        
+            res.redirect('/')
         } else {
             return loginError(res)
         }
