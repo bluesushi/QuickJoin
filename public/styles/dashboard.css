@@ -6,8 +6,10 @@
 body {
     font-family: 'roboto';
     margin: 0;
+    height: 100vh;
 }
 
+/* styling for the header area */
 .dashboard_header {
     background-color: rgba(66, 138, 245, 1);
     color: white;
@@ -100,6 +102,45 @@ body {
 }
 
 /* rules for styling meeting links */
+
+.link-container {
+    width: 75%;
+    height: 100%;
+    margin: 0 auto;
+    margin-top: 10px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.link-container > div {
+    height: 45px;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(66, 192, 251, 0.5);
+}
+
+.column-names div:nth-child(1) {
+    flex: 4;
+}
+
+.column-names div:nth-child(2) {
+    flex: 1.5;
+}
+
+.link-name {
+    flex: 4;
+}
+
+.link-time {
+    flex: 1;
+}
+
+.link-join-button {
+    flex: 0.5;
+}
 
 #linkErrMsg {
     color: rgba(255, 0, 0, 0.7);

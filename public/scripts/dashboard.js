@@ -1,3 +1,6 @@
+import { ajax } from './util.js'
+import { renderLinks, renderNewLink } from './linksView.js'
+
 const settingsButton = document.querySelector('.settings_button')
 const tooltip = document.querySelector('#tooltip')
 const settingsPageLink = document.querySelector('#settings-page-link')
@@ -11,7 +14,10 @@ settingsButton.addEventListener('click', () => {
     }
 })
 
-signoutPageLink.addEventListener('click', () => window.location.href = "/usersignout")
+signoutPageLink.addEventListener('click', () => {
+    localStorage.clear()
+    window.location.href = "/usersignout"
+})
 settingsPageLink.addEventListener('click', () => window.location.href = "/settings")
 
 const modalOpenButton = document.querySelector('.add_link_button')
@@ -37,36 +43,15 @@ document.querySelectorAll('input').forEach(input => {
 })
 
 const addLinkButton = document.querySelector('.add-link-button')
-addLinkButton.addEventListener('click', () => {
-
+addLinkButton.addEventListener('click', async () => {
+    try {
+        await ajax('/addNewLink', classLink)
+        renderNewLink(classLink)
+    } catch(err) {
+        console.log(err)
+    }
 })
 
 window.addEventListener('load', () => {
-    const container = document.querySelector('.link-container')
-
-    fetch('/userlinks')
-        .then(res => res.json())
-        .then(data => {
-            if (data.message == 'no links') {
-                const firstLink = document.createElement('p')
-                firstLink.textContent = 'It seems you don\'t have any links yet. ' + 
-                    'Add your first one by clicking the \'+\' in the top right corner'
-                firstLink.id = 'linkStatus'
-                container.appendChild(firstLink)
-            } else {
-                console.log(data)
-                /*
-                data.links.map(link => {
-                    const 
-                })
-                .forEach
-                */
-            }
-        })
-        .catch(err => {
-            const errMsg = document.createElement('p')
-            errMsg.textContent = 'Could not load links'
-            errMsg.id = 'linkErrMsg'
-            container.appendChild(errMsg)
-        })
+    renderLinks()
 })

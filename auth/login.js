@@ -23,6 +23,7 @@ login.post('/userlogin', async (req, res, next) => {
             res.redirect('/')
         } else {
             return loginError(res)
+            // TODO: return email page when they're not confirmed return res.sendFile(path.join(__dirname + '/../views/emailSent.html'))
         }
     } catch(err) {
         return next(err)

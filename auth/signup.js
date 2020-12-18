@@ -18,7 +18,7 @@ signup.get('/confirmaccount/:randomToken', async (req, res, next) => {
         const { rows } = await db.query('UPDATE users SET confirmed = TRUE ' +
             'WHERE confirmation_code = $1 RETURNING email', [req.params.randomToken])
         if (rows.length > 0) {
-            return res.send('account has been confirmed, you may sign in now')
+            res.sendFile(path.join(__dirname + '/../views/emailConfirmed.html'))
         } else {
             return res.send('invalid confirmation code')
         }
@@ -41,7 +41,7 @@ signup.post('/usersignup', async (req, res, next) => {
 
         await insertUser(user)
         await mail.sendConfirmation(user)
-        res.send('check email for confirmation')
+        res.sendFile(path.join(__dirname + '/../views/emailSent.html'))
     } catch(err) {
         return next(err)
     }

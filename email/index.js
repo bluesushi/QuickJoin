@@ -17,7 +17,7 @@ async function sendConfirmation({ email, code }) {
             subject: "Quick Join confirmation email",
             html: `
                 <p>
-                    <a href="http://localhost:8080/signup/confirmaccount/${code}"
+                    <a href="http://localhost:8080/confirmaccount/${code}"
                         target="_blank"
                         rel="noreferrer noopener"
                     >

@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'roboto';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+body {
+    margin: 0;
+    font-family: 'roboto';
+}
+
+.dashboard_header {
+    background-color: rgba(66, 138, 245, 1);
+    color: white;
+    height: 50px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+}
+
+.header_logo > h1 {
+    margin: 0;
+    margin-left: 15px;
+    font-size: 25px;
+}
