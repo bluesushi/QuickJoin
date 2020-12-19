@@ -47,6 +47,8 @@ addLinkButton.addEventListener('click', async () => {
     try {
         await ajax('/addNewLink', classLink)
         renderNewLink(classLink)
+        modal.style.display = 'none'
+        classLink = {}
     } catch(err) {
         console.log(err)
     }

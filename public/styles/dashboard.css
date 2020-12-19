@@ -138,8 +138,23 @@ body {
     flex: 1;
 }
 
-.link-join-button {
+.link-join{
     flex: 0.5;
+    text-align: right;
+}
+
+.link-join-button {
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 1em;
+    border: none;
+    background-color: rgba(116, 187, 251, 0.8);
+    color: white;
+    padding: 0.5em; 
+    width: 65px;
+}
+
+.link-join-button:hover {
+    cursor: pointer;
 }
 
 #linkErrMsg {

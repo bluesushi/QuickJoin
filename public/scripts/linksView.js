@@ -14,7 +14,8 @@ async function renderLinks() {
                     container.appendChild(firstLink)
                 } else {
                     localStorage.setItem('userLinks', JSON.stringify(data.links))
-                    generateHtml(data.links)
+                    state = data.links
+                    generateHtml(state)
                 }
             })
             .catch(err => {
@@ -25,10 +26,12 @@ async function renderLinks() {
             })
     } else {
         const links = JSON.parse(localStorage.getItem('userLinks'))
-        generateHtml(links) 
+        state = links
+        generateHtml(state) 
     }
 }
 
+let state = []
 function generateHtml(links) {
     const columnNames = document.createElement('div')
     columnNames.className = 'column-names'
@@ -46,12 +49,9 @@ function generateHtml(links) {
             entry.innerHTML = `
                 <div class="link-name">${link.link_name}</div>
                 <div class="link-time">${link.link_time}</div>
+                <div class="link-join"><button class="link-join-button">Join</button></div>
             `
-            const joinBtn = document.createElement('button')
-            joinBtn.className = 'link-join-button'
-            joinBtn.textContent = 'Join'
-            joinBtn.addEventListener('click', () => window.open(link.link_url, '_blank'))
-            entry.appendChild(joinBtn)
+            entry.lastElementChild.addEventListener('click', () => window.open(link.link_url, '_blank'))
 
             return entry
         })
@@ -59,7 +59,22 @@ function generateHtml(links) {
 }
 
 function renderNewLink(link) {
+    console.log(link)
+    
+    state.push(link)
+    localStorage.setItem('userLinks', JSON.stringify(state))
 
+    const entry = document.createElement('div')
+
+    entry.className = 'entry'
+    entry.innerHTML = `
+        <div class="link-name">${link.link_name}</div>
+        <div class="link-time">${link.link_time}</div>
+        <div class="link-join"><button class="link-join-button">Join</button></div>
+    `
+    entry.lastElementChild.addEventListener('click', () => window.open(link.link_url, '_blank'))
+
+    container.appendChild(entry)
 }
 
 function removeLink(link) {

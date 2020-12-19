@@ -33,9 +33,9 @@ home.get('/', async (req, res) => {
 
 home.post('/addnewlink', checkLoggedIn, async (req, res) => {
     try {
-        const { 'meeting-url': url, 'meeting-name': name, 'meeting-time': time } = req.body 
+        const { link_url, link_name, link_time } = req.body 
         await db.query(`INSERT INTO user_links (user_id, link_url, link_name, link_time)
-            VALUES ($1, $2, $3, $4)`, [req.session.userID, url, name, time])
+            VALUES ($1, $2, $3, $4)`, [req.session.userID, link_url, link_name, link_time])
         res.json({ message: 'success' })
     } catch(err) {
         console.log(err)
