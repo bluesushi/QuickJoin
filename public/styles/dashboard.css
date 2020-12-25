@@ -54,9 +54,11 @@ body {
     height: 20px;
 }
 
+.settings-options {
+    padding: 7px 0;
+}
 .settings-options > div {
     padding: 1em;
-    border-radius: 4px;
 }
 
 .settings-options > div:hover {
@@ -126,8 +128,9 @@ body {
     flex: 4;
 }
 
+/* this flex val must equal the link flex vals from link-time */
 .column-names div:nth-child(2) {
-    flex: 1.5;
+    flex: 1.7;
 }
 
 .link-name {
@@ -140,7 +143,18 @@ body {
 
 .link-join{
     flex: 0.5;
-    text-align: right;
+}
+
+.link-editors {
+    flex: 0.1;
+    text-align: center;
+}
+
+.link-editors > button {
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
 }
 
 .link-join-button {

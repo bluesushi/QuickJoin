@@ -42,19 +42,7 @@ function generateHtml(links) {
     container.appendChild(columnNames)
 
     links.sort((a, b) => parseInt(a.link_time) - parseInt(b.link_time))
-        .map(link => {
-            const entry = document.createElement('div')
-
-            entry.className = 'entry'
-            entry.innerHTML = `
-                <div class="link-name">${link.link_name}</div>
-                <div class="link-time">${link.link_time}</div>
-                <div class="link-join"><button class="link-join-button">Join</button></div>
-            `
-            entry.lastElementChild.addEventListener('click', () => window.open(link.link_url, '_blank'))
-
-            return entry
-        })
+        .map(link => getLinkMarkup(link))
         .forEach(entry => container.appendChild(entry))
 }
 
@@ -64,17 +52,25 @@ function renderNewLink(link) {
     state.push(link)
     localStorage.setItem('userLinks', JSON.stringify(state))
 
+    const entry = getLinkMarkup(link)
+
+    container.appendChild(entry)
+}
+
+function getLinkMarkup({ link_name, link_time, link_url }) {
     const entry = document.createElement('div')
 
     entry.className = 'entry'
     entry.innerHTML = `
-        <div class="link-name">${link.link_name}</div>
-        <div class="link-time">${link.link_time}</div>
+        <div class="link-name">${link_name}</div>
+        <div class="link-time">${link_time}</div>
         <div class="link-join"><button class="link-join-button">Join</button></div>
+        <div class="link-editors link-edit"><button><img src="/images/pen.svg"></button></div>
+        <div class="link-editors link-remove"><button><img src="/images/x-circle.svg"></button></div>
     `
-    entry.lastElementChild.addEventListener('click', () => window.open(link.link_url, '_blank'))
+    entry.querySelector('.link-join-button').addEventListener('click', () => window.open(link_url, '_blank'))
 
-    container.appendChild(entry)
+    return entry
 }
 
 function removeLink(link) {
