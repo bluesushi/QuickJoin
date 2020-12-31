@@ -155,6 +155,7 @@ body {
     background: transparent;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .link-join-button {
@@ -183,7 +184,7 @@ body {
 }
 
 /* modal styling when adding a new link */
-.add_link_modal {
+.add_link_modal, .remove-link-modal {
     display: none;
     position: fixed;
     padding-top: 10%;
@@ -195,7 +196,7 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+.modal-content, .remove-link-modal-content {
     position: relative;
     background-color: white;
     padding: 15px;

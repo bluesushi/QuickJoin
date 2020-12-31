@@ -1,4 +1,5 @@
-import { ajax } from './util.js'
+import { ajax } from '../util.js'
+import { removeLinkConfirmed } from './modalControl.js'
 
 const container = document.querySelector('.link-container')
 
@@ -66,15 +67,24 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
         <div class="link-time">${link_time}</div>
         <div class="link-join"><button class="link-join-button">Join</button></div>
         <div class="link-editors link-edit"><button><img src="/images/pen.svg"></button></div>
-        <div class="link-editors link-remove"><button><img src="/images/x-circle.svg"></button></div>
+        <div class="link-editors link-remove"><button class="link-remove-button"><img src="/images/x-circle.svg"></button></div>
     `
     entry.querySelector('.link-join-button').addEventListener('click', () => window.open(link_url, '_blank'))
+    entry.querySelector('.link-remove-button').addEventListener('click', () => {
+        removeLinkConfirmed()
+            .then(result => {
+                if (result) {
+                    removeLink(link_url)
+                }
+            })
+    })
 
     return entry
 }
 
-function removeLink(link) {
-
+function removeLink(url) {
+    container.children
+        .filter(entry => entry)
 }
 
 export { renderLinks, renderNewLink, removeLink }
