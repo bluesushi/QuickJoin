@@ -4,7 +4,8 @@ import { removeLinkConfirmed } from './modalControl.js'
 const container = document.querySelector('.link-container')
 
 async function renderLinks() {
-    if (!localStorage.getItem('userLinks')) {
+    // first check if links are in localstorage
+    if (!localStorage.getItem('userLinks') || localStorage.getItem('userLinks') == '[]') {
         await ajax('/userlinks')
             .then(data => {
                 if (data.message == 'no links') {
@@ -48,8 +49,6 @@ function generateHtml(links) {
 }
 
 function renderNewLink(link) {
-    console.log(link)
-    
     state.push(link)
     localStorage.setItem('userLinks', JSON.stringify(state))
 
@@ -72,19 +71,56 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
     entry.querySelector('.link-join-button').addEventListener('click', () => window.open(link_url, '_blank'))
     entry.querySelector('.link-remove-button').addEventListener('click', () => {
         removeLinkConfirmed()
-            .then(result => {
+            .then(async (result) => {
                 if (result) {
-                    removeLink(link_url)
+                    removeLocalLink(link_name)
+                    await removeRemoteLink(link_name)
                 }
+            })
+            .catch(err => {
+                console.error(err)
+                renderOperationStatus('Could not remove link from db')
             })
     })
 
     return entry
 }
 
-function removeLink(url) {
-    container.children
-        .filter(entry => entry)
+function removeLocalLink(name) {
+    state = state.filter(link => link.link_name != name)
+    localStorage.setItem('userLinks', JSON.stringify(state))
+
+    container.removeChild(Array.from(container.children)
+        .find(entry => entry.firstElementChild.innerText == name))
 }
 
-export { renderLinks, renderNewLink, removeLink }
+async function removeRemoteLink(name) {
+    await ajax('/removeLink', { link_name: name })
+}
+
+function renderOperationStatus(message) {
+    let status
+    if (status = document.querySelector('.operation-status')) {
+        status.lastElementChild.innerText = message
+        return
+    }
+
+    status = document.createElement('div')
+    const content = document.createElement('span')
+    content.innerText = message
+    const close = document.createElement('button')
+    const img = document.createElement('img')
+
+    img.setAttribute('src', '/images/x.svg')
+    img.setAttribute('id', 'close-op-status-image')
+    close.appendChild(img)
+    close.addEventListener('click', () => document.body.removeChild(status))
+
+    status.appendChild(close)
+    status.appendChild(content)
+    status.className = 'operation-status'
+
+    document.body.insertBefore(status, container)
+}
+
+export { renderLinks, renderNewLink }

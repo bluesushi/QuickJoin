@@ -43,4 +43,15 @@ home.post('/addnewlink', checkLoggedIn, async (req, res) => {
     }
 })
 
+home.post('/removeLink', checkLoggedIn, async (req, res) => {
+    try {
+        const { link_name } = req.body
+        await db.query('DELETE FROM user_links WHERE link_name = $1 AND user_id = $2', [link_name, req.session.userID])
+        res.status(200).json('success')
+    } catch(err) {
+        console.log(err)
+        res.status(300).json('failure')
+    }
+})
+
 module.exports = home

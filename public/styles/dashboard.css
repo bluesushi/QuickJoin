@@ -130,7 +130,7 @@ body {
 
 /* this flex val must equal the link flex vals from link-time */
 .column-names div:nth-child(2) {
-    flex: 1.7;
+    flex: 1.9;
 }
 
 .link-name {
@@ -146,16 +146,17 @@ body {
 }
 
 .link-editors {
-    flex: 0.1;
-    text-align: center;
+    flex: 0.2;
 }
 
 .link-editors > button {
     border: none;
     background: transparent;
+    float: right;
     display: flex;
     align-items: center;
     cursor: pointer;
+    padding: 0;
 }
 
 .link-join-button {
@@ -166,6 +167,7 @@ body {
     color: white;
     padding: 0.5em; 
     width: 65px;
+    float: right;
 }
 
 .link-join-button:hover {
@@ -231,4 +233,32 @@ body {
 @keyframes animatetop {
     from {top:-300px; opacity:0}
     to {top:0; opacity:1}
+}
+
+/* operation status message */
+.operation-status {
+    border: 2px solid rgba(79, 142, 131, 0.9);
+    border-right: 0px;
+    border-left: 0px;
+    height: 10%;
+
+    background-color: rgb(76, 183, 165);
+    background-color: rgba(76, 183, 165, 0.5);
+    color: #171a1e;
+    color: rgba(23, 26, 30, 0.8);
+
+    display: flex;
+    align-items: center;
+}
+
+.operation-status > button {
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.operation-status > button > img {
+    height: 25px;
 }
