@@ -1,5 +1,7 @@
 import { ajax } from '../util.js'
 import { removeLinkConfirmed } from './modalControl.js'
+import { encodeHTML } from 'entities'
+import { state } from './state.js'
 
 const container = document.querySelector('.link-container')
 
@@ -16,24 +18,23 @@ async function renderLinks() {
                     container.appendChild(firstLink)
                 } else {
                     localStorage.setItem('userLinks', JSON.stringify(data.links))
-                    state = data.links
-                    generateHtml(state)
+                    state.linkArray = data.links
+                    generateHtml(state.linkArray)
                 }
             })
             .catch(err => {
+                console.log(err) // TODO probably remove later
                 const errMsg = document.createElement('p')
                 errMsg.textContent = 'Could not load links'
                 errMsg.id = 'linkErrMsg'
                 container.appendChild(errMsg)
             })
     } else {
-        const links = JSON.parse(localStorage.getItem('userLinks'))
-        state = links
-        generateHtml(state) 
+        state.linkArray = JSON.parse(localStorage.getItem('userLinks'))
+        generateHtml(state.linkArray) 
     }
 }
 
-let state = []
 function generateHtml(links) {
     const columnNames = document.createElement('div')
     columnNames.className = 'column-names'
@@ -48,9 +49,17 @@ function generateHtml(links) {
         .forEach(entry => container.appendChild(entry))
 }
 
+async function addNewLink(link) {
+    try {
+        await ajax('/addNewLink', link)
+    } catch(err) {
+        renderOperationStatus('Could not upload link to database')
+    }
+}
+
 function renderNewLink(link) {
-    state.push(link)
-    localStorage.setItem('userLinks', JSON.stringify(state))
+    state.linkArray.push(link)
+    localStorage.setItem('userLinks', JSON.stringify(state.linkArray))
 
     const entry = getLinkMarkup(link)
 
@@ -62,7 +71,7 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
 
     entry.className = 'entry'
     entry.innerHTML = `
-        <div class="link-name">${link_name}</div>
+        <div class="link-name">${encodeHTML(link_name)}</div>
         <div class="link-time">${link_time}</div>
         <div class="link-join"><button class="link-join-button">Join</button></div>
         <div class="link-editors link-edit"><button><img src="/images/pen.svg"></button></div>
@@ -70,7 +79,7 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
     `
     entry.querySelector('.link-join-button').addEventListener('click', () => window.open(link_url, '_blank'))
     entry.querySelector('.link-remove-button').addEventListener('click', () => {
-        removeLinkConfirmed()
+        removeLinkConfirmed(link_name)
             .then(async (result) => {
                 if (result) {
                     removeLocalLink(link_name)
@@ -87,9 +96,10 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
 }
 
 function removeLocalLink(name) {
-    state = state.filter(link => link.link_name != name)
-    localStorage.setItem('userLinks', JSON.stringify(state))
+    state.linkArray = state.linkArray.filter(link => link.link_name != name)
+    localStorage.setItem('userLinks', JSON.stringify(state.linkArray))
 
+    // TODO: innerText doesn't render whitespace on either ends so that needs to be fixed
     container.removeChild(Array.from(container.children)
         .find(entry => entry.firstElementChild.innerText == name))
 }
@@ -100,7 +110,7 @@ async function removeRemoteLink(name) {
 
 function renderOperationStatus(message) {
     let status
-    if (status = document.querySelector('.operation-status')) {
+    if ((status = document.querySelector('.operation-status'))) {
         status.lastElementChild.innerText = message
         return
     }
@@ -123,4 +133,4 @@ function renderOperationStatus(message) {
     document.body.insertBefore(status, container)
 }
 
-export { renderLinks, renderNewLink }
+export { renderLinks, renderNewLink, addNewLink, renderOperationStatus }

@@ -2,10 +2,11 @@
   "name": "quickjoin",
   "version": "0.0.1",
   "description": "A tool to organize online classes and easily join them",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -18,15 +19,21 @@
   },
   "homepage": "https://github.com/wubberfish/QuickJoin#readme",
   "dependencies": {
-    "@popperjs/core": "^2.5.4",
     "bcrypt": "^5.0.0",
     "connect-pg-simple": "^6.2.1",
     "ejs": "^3.1.5",
+    "entities": "^2.1.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "lodash": "^4.17.20",
     "nanoid": "^3.1.18",
     "nodemailer": "^6.4.16",
     "pg": "^8.5.1",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.1"
   }
 }

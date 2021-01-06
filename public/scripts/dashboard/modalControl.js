@@ -1,5 +1,8 @@
-import { ajax, clearValues } from '../util.js'
-import { renderNewLink } from './linksView.js'
+import { clearValues, checkLinkValid, checkDuplicateName } from '../util.js'
+import { renderNewLink, addNewLink, renderOperationStatus } from './linksView.js'
+import { cloneDeep } from 'lodash/lang'
+import { state } from './state.js'
+const { classLink } = state
 
 const modalOpenButton = document.querySelector('.add_link_button')
 const modalCloseButton = document.querySelector('.cancel-modal')
@@ -11,34 +14,46 @@ modalCloseButton.addEventListener('click', () => {
     clearValues(classLink)
 })
 
-let classLink = {
-    link_time: '',
-    link_name: '',
-    link_url: ''
-}
 const addLinkButton = document.querySelector('.add-link-button')
 
-document.querySelectorAll('input').forEach(input => {
+let inputFields = document.querySelectorAll('input')
+inputFields.forEach(input => {
     input.addEventListener('input', () => classLink[input.id] = input.value) 
 })
 
 addLinkButton.addEventListener('click', async () => {
-    try {
-        await ajax('/addNewLink', classLink)
-        renderNewLink(classLink)
-        modal.style.display = 'none'
-        clearValues(classLink)
-    } catch(err) {
-        console.log(err)
+    // TODO: trim white space on link names
+    if (!checkLinkValid(classLink)) {
+        renderOperationStatus('Link url and link name cannot be empty')
+        return closeAddLinkModal()
+    } else if (checkDuplicateName(state.linkArray, classLink.link_name)) {
+        renderOperationStatus('Link name must be unique')
+        return closeAddLinkModal()
     }
+
+    if (!classLink.link_time) {
+            classLink.link_time = 'N/A'
+    }
+
+    const tempLink = cloneDeep(classLink)
+    await addNewLink(tempLink)
+    renderNewLink(tempLink)
+    closeAddLinkModal()
 })
+
+function closeAddLinkModal() {
+    modal.style.display = 'none'
+    clearValues(classLink)
+    inputFields.forEach(field => field.value = '')
+}
 
 const removeLinkModal = document.querySelector('.remove-link-modal')
 const removeLinkModalContent = document.querySelector('.remove-link-modal-content')
 export function removeLinkConfirmed(linkName) {
     flipDisplay(removeLinkModal)
 
-    return new Promise((resolve, reject) => {
+    removeLinkModal.firstElementChild.firstElementChild.innerText = 'Remove ' + linkName + '?'
+    return new Promise((resolve) => {
         removeLinkModalContent.children[1].onclick = () => {
             flipDisplay(removeLinkModal)
             resolve(true)

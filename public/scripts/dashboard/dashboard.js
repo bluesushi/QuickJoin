@@ -1,4 +1,4 @@
-import { renderLinks, renderNewLink } from './linksView.js'
+import { renderLinks } from './linksView.js'
 
 window.addEventListener('load', () => {
     renderLinks()

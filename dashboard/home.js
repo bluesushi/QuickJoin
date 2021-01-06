@@ -39,7 +39,7 @@ home.post('/addnewlink', checkLoggedIn, async (req, res) => {
         res.json({ message: 'success' })
     } catch(err) {
         console.log(err)
-        res.json({ error: 'failure' })
+        res.status(400).json({ message: 'Link could not be added to db (urls must be unique to be added)' })
     }
 })
 
