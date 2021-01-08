@@ -34,5 +34,4 @@ function loginError(res) {
     res.render('login', { error: { message: "Incorrect username or password" }})
 }
 
-
 module.exports = login

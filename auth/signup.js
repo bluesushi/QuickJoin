@@ -8,6 +8,7 @@ const { v4: uuidv4 } = require('uuid')
 const db = require('../db/index.js')
 const mail = require('../email/index.js')
 const auth = require('./auth.js')
+const { User } = require('../db/models.js')
 
 signup.get('/signup', auth.redirectDashboard, (req, res) => {
     res.sendFile(path.join(__dirname + '/../views/signup.html'))
@@ -23,6 +24,7 @@ signup.get('/confirmaccount/:randomToken', async (req, res, next) => {
             return res.send('invalid confirmation code')
         }
     } catch(err) {
+        console.log(err)
         next(err)
     }
 })
@@ -37,12 +39,13 @@ signup.post('/usersignup', async (req, res, next) => {
 
         const hash = await genHash(password)
         const randomToken = nanoid()
-        const user = new User(email, hash, randomToken, uuidv4())
+        const user = new User(email, hash, randomToken)
 
         await insertUser(user)
         await mail.sendConfirmation(user)
         res.sendFile(path.join(__dirname + '/../views/emailSent.html'))
     } catch(err) {
+        console.log(err)
         return next(err)
     }
 })
@@ -52,13 +55,6 @@ signup.get('/usersignout', async (req, res, next) => {
         res.redirect('/login')
     })
 })
-
-function User(email, hash, code, userID) {
-    this.email = email
-    this.hash = hash
-    this.code = code 
-    this.userID = userID
-}
 
 async function checkDuplicateUser(email) {
     const { rows } = await db.query('SELECT email FROM users WHERE email = $1', [email])
@@ -71,8 +67,8 @@ async function genHash(password) {
     return hashedPassword
 }
 
-async function insertUser({ email, hash, code, userID }) {
-    await db.query('INSERT INTO users(email, password, confirmation_code, user_id) VALUES($1, $2, $3, $4)', [email, hash, code, userID])
+async function insertUser({ email, hash, code }) {
+    await db.query('INSERT INTO users(email, password, confirmation_code) VALUES($1, $2, $3)', [email, hash, code])
 }
 
 module.exports = signup

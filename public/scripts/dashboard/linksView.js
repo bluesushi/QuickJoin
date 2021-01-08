@@ -4,6 +4,8 @@ import { encodeHTML } from 'entities'
 import { state } from './state.js'
 
 const container = document.querySelector('.link-container')
+const specialMessage = document.querySelector('.special-message')
+const columnNames = document.querySelector('.column-names')
 
 async function renderLinks() {
     // first check if links are in localstorage
@@ -11,23 +13,20 @@ async function renderLinks() {
         await ajax('/userlinks')
             .then(data => {
                 if (data.message == 'no links') {
-                    const firstLink = document.createElement('p')
-                    firstLink.textContent = 'It seems you don\'t have any links yet. ' + 
+                    specialMessage.textContent = 'It seems you don\'t have any links yet. ' + 
                         'Add your first one by clicking the \'+\' in the top right corner'
-                    firstLink.id = 'linkStatus'
-                    container.appendChild(firstLink)
+                    specialMessage.style.display = 'block'
                 } else {
                     localStorage.setItem('userLinks', JSON.stringify(data.links))
                     state.linkArray = data.links
+                    columnNames.style.display = 'flex'
                     generateHtml(state.linkArray)
                 }
             })
             .catch(err => {
                 console.log(err) // TODO probably remove later
-                const errMsg = document.createElement('p')
-                errMsg.textContent = 'Could not load links'
-                errMsg.id = 'linkErrMsg'
-                container.appendChild(errMsg)
+                specialMessage.textContent = 'Could not load links'
+                specialMessage.style.display = 'block'
             })
     } else {
         state.linkArray = JSON.parse(localStorage.getItem('userLinks'))
@@ -36,14 +35,6 @@ async function renderLinks() {
 }
 
 function generateHtml(links) {
-    const columnNames = document.createElement('div')
-    columnNames.className = 'column-names'
-    columnNames.innerHTML = `
-        <div><h3>Name</h3></div>
-        <div><h3>Time</h3></div>
-    `
-    container.appendChild(columnNames)
-
     links.sort((a, b) => parseInt(a.link_time) - parseInt(b.link_time))
         .map(link => getLinkMarkup(link))
         .forEach(entry => container.appendChild(entry))
@@ -61,8 +52,12 @@ function renderNewLink(link) {
     state.linkArray.push(link)
     localStorage.setItem('userLinks', JSON.stringify(state.linkArray))
 
-    const entry = getLinkMarkup(link)
+    if (state.linkArray.length === 1) {
+        specialMessage.style.display = 'none'
+        columnNames.style.display = 'flex'
+    }
 
+    const entry = getLinkMarkup(link)
     container.appendChild(entry)
 }
 
@@ -98,6 +93,11 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
 function removeLocalLink(name) {
     state.linkArray = state.linkArray.filter(link => link.link_name != name)
     localStorage.setItem('userLinks', JSON.stringify(state.linkArray))
+
+    if (state.linkArray.length == 0) {
+        specialMessage.style.display = 'block'
+        columnNames.style.display = 'none'
+    }
 
     // TODO: innerText doesn't render whitespace on either ends so that needs to be fixed
     container.removeChild(Array.from(container.children)

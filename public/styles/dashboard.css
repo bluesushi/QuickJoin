@@ -5,6 +5,7 @@
 
 body {
     font-family: 'roboto';
+    color: #444;
     margin: 0;
     height: 100vh;
 }
@@ -25,6 +26,7 @@ body {
     font-size: 25px;
 }
 
+/* styling for the tool area */
 .toolarea {
     display: flex;
 }
@@ -104,12 +106,17 @@ body {
 }
 
 /* rules for styling meeting links */
+.special-message {
+    text-align: center;
+    color: #444;
+    color: rgba(68, 68, 68, 0.6);
+    display: none;
+}
 
 .link-container {
     width: 75%;
     height: 100%;
     margin: 0 auto;
-    margin-top: 10px;
 
     display: flex;
     flex-direction: column;
@@ -122,6 +129,17 @@ body {
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(66, 192, 251, 0.5);
+}
+
+.column-names {
+    height: 45px;
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 10px;
+
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(66, 192, 251, 0.5)
 }
 
 .column-names div:nth-child(1) {
@@ -177,12 +195,7 @@ body {
 #linkErrMsg {
     color: rgba(255, 0, 0, 0.7);
     text-align: center;
-}
-
-#linkStatus {
-    color: rgba(105, 105, 105, 0.7);
-    font-style: italic;
-    text-align: center;
+    display: 'none';
 }
 
 /* modal styling when adding a new link */

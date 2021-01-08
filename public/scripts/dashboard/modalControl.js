@@ -18,7 +18,7 @@ const addLinkButton = document.querySelector('.add-link-button')
 
 let inputFields = document.querySelectorAll('input')
 inputFields.forEach(input => {
-    input.addEventListener('input', () => classLink[input.id] = input.value) 
+    input.addEventListener('input', () => classLink[input.id] = input.value.trim()) // trim values to avoid errors with innerText
 })
 
 addLinkButton.addEventListener('click', async () => {
