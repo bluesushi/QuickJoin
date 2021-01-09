@@ -1,5 +1,5 @@
 import { ajax } from '../util.js'
-import { removeLinkConfirmed } from './modalControl.js'
+import { removeLinkConfirmed, openLinkEditor } from './modalControl.js'
 import { encodeHTML } from 'entities'
 import { state } from './state.js'
 
@@ -69,7 +69,7 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
         <div class="link-name">${encodeHTML(link_name)}</div>
         <div class="link-time">${link_time}</div>
         <div class="link-join"><button class="link-join-button">Join</button></div>
-        <div class="link-editors link-edit"><button><img src="/images/pen.svg"></button></div>
+        <div class="link-editors link-edit"><button class="link-edit-button"><img src="/images/pen.svg"></button></div>
         <div class="link-editors link-remove"><button class="link-remove-button"><img src="/images/x-circle.svg"></button></div>
     `
     entry.querySelector('.link-join-button').addEventListener('click', () => window.open(link_url, '_blank'))
@@ -85,6 +85,9 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
                 console.error(err)
                 renderOperationStatus('Could not remove link from db')
             })
+    })
+    entry.querySelector('.link-edit-button').addEventListener('click', () => {
+        openLinkEditor({ link_url, link_time, link_name })
     })
 
     return entry

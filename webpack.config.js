@@ -4,15 +4,15 @@ module.exports = {
     mode: 'development',
     entry: {
         dashboard: [
-        	'./public/scripts/dashboard/dashboard.js',
-        	'./public/scripts/dashboard/settingsControl.js'
+        	'./web/dashboard/dashboard.js',
+        	'./web/dashboard/settingsControl.js'
         ],
         login: {
-        	import: './public/scripts/login.js',
+        	import: './web/login.js',
         	filename: '[name].js'
         },
         signup: { 
-        	import: './public/scripts/login.js',
+        	import: './web/login.js',
         	filename: '[name].js'
         }
     },

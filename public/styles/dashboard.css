@@ -199,7 +199,7 @@ body {
 }
 
 /* modal styling when adding a new link */
-.add_link_modal, .remove-link-modal {
+.blocking-screen {
     display: none;
     position: fixed;
     padding-top: 10%;
@@ -211,7 +211,7 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content, .remove-link-modal-content {
+.animated-modal {
     position: relative;
     background-color: white;
     padding: 15px;

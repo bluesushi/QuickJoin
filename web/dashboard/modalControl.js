@@ -14,13 +14,12 @@ modalCloseButton.addEventListener('click', () => {
     clearValues(classLink)
 })
 
-const addLinkButton = document.querySelector('.add-link-button')
-
-let inputFields = document.querySelectorAll('input')
-inputFields.forEach(input => {
+let newLinkInputs = document.querySelectorAll('.new-link-input')
+newLinkInputs.forEach(input => {
     input.addEventListener('input', () => classLink[input.id] = input.value.trim()) // trim values to avoid errors with innerText
 })
 
+const addLinkButton = document.querySelector('.add-link-button')
 addLinkButton.addEventListener('click', async () => {
     // TODO: trim white space on link names
     if (!checkLinkValid(classLink)) {
@@ -44,7 +43,7 @@ addLinkButton.addEventListener('click', async () => {
 function closeAddLinkModal() {
     modal.style.display = 'none'
     clearValues(classLink)
-    inputFields.forEach(field => field.value = '')
+    newLinkInputs.forEach(field => field.value = '')
 }
 
 const removeLinkModal = document.querySelector('.remove-link-modal')
@@ -68,3 +67,39 @@ export function removeLinkConfirmed(linkName) {
 function flipDisplay(e) {
     e.style.display ? e.style.display = '' : e.style.display = 'block'
 }
+
+const editLinkModal = document.querySelector('.edit-link-modal')
+const editLinkModalContent = document.querySelector('.edit-link-modal-content')
+const editLinkInputs = document.querySelectorAll('.edit-link-input')
+editLinkInputs.forEach(input => {
+    input.addEventListener('input', () => {state.editLink[input.id] = input.value; console.log(state.editLink)})
+})
+
+export function openLinkEditor({ link_url, link_time, link_name }) {
+    editLinkInputs.forEach(input => {
+        const id = input.id
+        if (id == 'edit-name') {
+            input.value = link_name
+            state.editLink[id] = link_name
+        } else if (id == 'edit-url') {
+            input.value = link_url
+            state.editLink[id] = link_url
+        } else {
+            input.value = link_time
+            state.editLink[id] = link_time
+        }
+    })
+    editLinkModal.style.display = 'block'
+}
+
+document.querySelector('#close-link-editor')
+    .addEventListener('click', () => {
+        editLinkModal.style.display = 'none'
+        clearValues(state.editLink)
+    })
+
+document.querySelector('#save-edited-link')
+    .addEventListener('click', () => {
+        
+    })
+
