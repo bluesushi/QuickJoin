@@ -32,9 +32,14 @@ body {
 
 .loginsection {
     width: 40%;
+    height: 50%;
+    display: flex;
+    align-items: center;
 }
 
 .loginform {
+    height: 60%;
+    width: 100%;
     padding: 1em;
     border-radius: 1em;
     border: 2px solid rgba(30, 141, 227, 0.7);
@@ -46,6 +51,12 @@ body {
     padding: 0;
     margin: 0;
     text-align: center;
+
+    height: 85%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .userinfo {
@@ -62,10 +73,29 @@ body {
 
 .userinfo input {
     width: 100%;
+    outline: none;
+    border: 1px solid rgb(66, 138, 245);
+    border-radius: 5px; 
 }
 
 .submitbtn {
     padding: 2px;
+}
+
+.submitbtn > button {
+    border: 2px solid transparent;
+    outline: none;
+    color: white;
+    background-color: rgba(66, 138, 245, 0.8);
+    border-radius: 5px;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+
+.submitbtn > button:hover {
+    color: rgba(66, 138, 245, 0.8);
+    border: 2px solid rgba(66, 138, 245, 0.8);
+    background-color: white;
 }
 
 .loginerror {
@@ -90,6 +120,7 @@ body {
 
 #closeErrBtn:hover {
     cursor: pointer; 
+    outline: none;
 }
 
 #closeErrBtn > img {
@@ -99,6 +130,6 @@ body {
 .signuplink {
     width: 90%;
     margin: 0 auto;
-    margin-top: 4%;
+    /* margin-top: 4%; */
     text-align: center;
 }
