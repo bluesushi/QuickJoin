@@ -54,4 +54,15 @@ home.post('/removeLink', checkLoggedIn, async (req, res) => {
     }
 })
 
+home.post('/editLink', checkLoggedIn, async (req, res) => {
+    try {
+        const { key, 'edit-url': url, 'edit-time': time, 'edit-name': name } = req.body
+        await db.query('UPDATE user_links SET link_url = $1, link_time = $2, link_name = $3 WHERE link_name = $4',
+            [url, time, name, key])
+    } catch(err) {
+        console.log(err)
+        res.status(500).json('failure')
+    }
+})
+
 module.exports = home

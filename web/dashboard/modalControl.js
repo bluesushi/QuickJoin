@@ -1,5 +1,5 @@
-import { clearValues, checkLinkValid, checkDuplicateName } from '../util.js'
-import { renderNewLink, addNewLink, renderOperationStatus } from './linksView.js'
+import { clearValues, checkLinkValid, checkDuplicateName, ajax } from '../util.js'
+import { renderNewLink, addNewLink, renderOperationStatus, updateLink } from './linksView.js'
 import { cloneDeep } from 'lodash/lang'
 import { state } from './state.js'
 const { classLink } = state
@@ -69,25 +69,30 @@ function flipDisplay(e) {
 }
 
 const editLinkModal = document.querySelector('.edit-link-modal')
-const editLinkModalContent = document.querySelector('.edit-link-modal-content')
+// const editLinkModalContent = document.querySelector('.edit-link-modal-content')
 const editLinkInputs = document.querySelectorAll('.edit-link-input')
 editLinkInputs.forEach(input => {
-    input.addEventListener('input', () => {state.editLink[input.id] = input.value; console.log(state.editLink)})
+    input.addEventListener('input', () => {
+        state.editLink[input.id] = input.value.trim()
+        state.editLink.edited = true
+    })
 })
 
-export function openLinkEditor({ link_url, link_time, link_name }) {
+export function openLinkEditor(key, url, time, name) {
     editLinkInputs.forEach(input => {
         const id = input.id
         if (id == 'edit-name') {
-            input.value = link_name
-            state.editLink[id] = link_name
+            input.value = name
+            state.editLink[id] = name
         } else if (id == 'edit-url') {
-            input.value = link_url
-            state.editLink[id] = link_url
+            input.value = url
+            state.editLink[id] = url
         } else {
-            input.value = link_time
-            state.editLink[id] = link_time
+            input.value = time
+            state.editLink[id] = time
         }
+
+        state.editLink.key = key
     })
     editLinkModal.style.display = 'block'
 }
@@ -95,11 +100,23 @@ export function openLinkEditor({ link_url, link_time, link_name }) {
 document.querySelector('#close-link-editor')
     .addEventListener('click', () => {
         editLinkModal.style.display = 'none'
-        clearValues(state.editLink)
+        // clearValues(state.editLink)
     })
 
 document.querySelector('#save-edited-link')
-    .addEventListener('click', () => {
-        
+    .addEventListener('click', async () => {
+        editLinkModal.style.display = 'none'
+        if (state.editLink.edited) {
+            updateLink({ ...state.editLink })
+            try {
+                await ajax('/editLink', { ...state.editLink })
+            } catch(err) {
+                console.error(err)
+                renderOperationStatus('Could not update link in db')
+            }
+        }
+
+        // line right under function beginning can't go here?
+        // clearValues(state.editLink)
     })
 

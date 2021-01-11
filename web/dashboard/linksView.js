@@ -17,6 +17,8 @@ async function renderLinks() {
                         'Add your first one by clicking the \'+\' in the top right corner'
                     specialMessage.style.display = 'block'
                 } else {
+                    // TODO take another at how special message is rendered when
+                    // there are no links
                     localStorage.setItem('userLinks', JSON.stringify(data.links))
                     state.linkArray = data.links
                     columnNames.style.display = 'flex'
@@ -48,6 +50,19 @@ async function addNewLink(link) {
     }
 }
 
+export function updateLink({ key, 'edit-url': url, 'edit-name': name, 'edit-time': time }) {
+    state.linkArray = state.linkArray.filter(link => link.link_name != key)
+        .concat([{ link_url: url, link_name: name, link_time: time }])
+    localStorage.setItem('userLinks', JSON.stringify(state.linkArray))
+
+    const toEdit = Array.from(container.children)
+        .find(e => e.firstElementChild.innerText == key)
+
+    toEdit.querySelector('.link-name').innerText = name
+    toEdit.querySelector('.link-time').innerText = time
+    toEdit.querySelector('.link-join-button').onclick = linkOpener(url)
+}
+
 function renderNewLink(link) {
     state.linkArray.push(link)
     localStorage.setItem('userLinks', JSON.stringify(state.linkArray))
@@ -72,7 +87,7 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
         <div class="link-editors link-edit"><button class="link-edit-button"><img src="/images/pen.svg"></button></div>
         <div class="link-editors link-remove"><button class="link-remove-button"><img src="/images/x-circle.svg"></button></div>
     `
-    entry.querySelector('.link-join-button').addEventListener('click', () => window.open(link_url, '_blank'))
+    entry.querySelector('.link-join-button').onclick = linkOpener(link_url)
     entry.querySelector('.link-remove-button').addEventListener('click', () => {
         removeLinkConfirmed(link_name)
             .then(async (result) => {
@@ -87,10 +102,16 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
             })
     })
     entry.querySelector('.link-edit-button').addEventListener('click', () => {
-        openLinkEditor({ link_url, link_time, link_name })
+        // MAJOR ERROR: we cannot use closures here because it doesn't get updated
+        // if any of these values change
+        openLinkEditor(link_name, link_url, link_time, link_name)
     })
 
     return entry
+}
+
+function linkOpener(url) {
+    return () => window.open(url, '_blank')
 }
 
 function removeLocalLink(name) {

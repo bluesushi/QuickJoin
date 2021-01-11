@@ -9,6 +9,7 @@ export let state =  {
 		'edit-name': "",
 		'edit-time': "",
 		'edit-url': "",
+		key: "",
 		edited: false
 	}
 }
