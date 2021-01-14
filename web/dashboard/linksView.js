@@ -13,9 +13,10 @@ async function renderLinks() {
         await ajax('/userlinks')
             .then(data => {
                 if (data.message == 'no links') {
-                    specialMessage.textContent = 'It seems you don\'t have any links yet. ' + 
+                    specialMessage.innerText = 'It seems you don\'t have any links yet. ' + 
                         'Add your first one by clicking the \'+\' in the top right corner'
                     specialMessage.style.display = 'block'
+                    columnNames.style.display = 'none'
                 } else {
                     // TODO take another at how special message is rendered when
                     // there are no links
@@ -121,6 +122,8 @@ function removeLocalLink(name) {
     if (state.linkArray.length == 0) {
         specialMessage.style.display = 'block'
         columnNames.style.display = 'none'
+        specialMessage.innerText = 'It seems you don\'t have any links yet. ' + 
+            'Add your first one by clicking the \'+\' in the top right corner'
     }
 
     // TODO: innerText doesn't render whitespace on either ends so that needs to be fixed
