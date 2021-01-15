@@ -34,10 +34,10 @@ if (app.get('env') === 'production') {
 app.use(session(sess))
         
 // load routes
-app.use(login)
-app.use(signup)
-app.use(home)
-app.use(settings)
+app.use('/', login)
+app.use('/', signup)
+app.use('/', home)
+app.use('/', settings)
 
 app.set('views', './views')
 app.set('view engine', 'ejs')
@@ -47,8 +47,6 @@ app.use(function (req, res, next) {
   res.status(404).sendFile(__dirname + '/views/notfound.html')
 })
 
-let port = process.env.PORT || 8080
-
-app.listen(port, () => console.log('Running at ' + port))
 
 module.exports.store = store
+module.exports.app = app

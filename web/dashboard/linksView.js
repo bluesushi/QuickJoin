@@ -33,6 +33,7 @@ async function renderLinks() {
             })
     } else {
         state.linkArray = JSON.parse(localStorage.getItem('userLinks'))
+        columnNames.style.display = 'flex'
         generateHtml(state.linkArray) 
     }
 }
@@ -157,7 +158,7 @@ function renderOperationStatus(message) {
     status.appendChild(content)
     status.className = 'operation-status'
 
-    document.body.insertBefore(status, container)
+    document.body.insertBefore(status, specialMessage)
 }
 
 export { renderLinks, renderNewLink, addNewLink, renderOperationStatus }
