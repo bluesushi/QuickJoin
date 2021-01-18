@@ -14,6 +14,10 @@ module.exports = {
         signup: { 
         	import: './web/login.js',
         	filename: '[name].js'
+        },
+        settings: {
+            import: './web/settings.js',
+            filename: '[name].js'
         }
     },
     output: {

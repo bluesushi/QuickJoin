@@ -1,6 +1,6 @@
 const express = require('express')
 const home = express.Router()
-const { checkLoggedIn } = require('../auth/auth.js')
+const { checkLoggedIn, redirectLogin } = require('../auth/auth.js')
 const db = require('../db/index.js')
 
 home.get('/userlinks', checkLoggedIn, async (req, res, next) => {
@@ -17,7 +17,7 @@ home.get('/userlinks', checkLoggedIn, async (req, res, next) => {
     }
 })
 
-home.get(['/', '/dashboard'], checkLoggedIn, async (req, res) => {
+home.get(['/', '/dashboard'], redirectLogin, async (req, res) => {
     try {
         const { rows } = await db.query('SELECT email FROM users WHERE user_id = $1', [req.session.userID])
 

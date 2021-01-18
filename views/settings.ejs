@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="/styles/genericHeader.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/genericModal.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/settings.css" />
 </head>
 <body>
     <header class="dashboard_header">
@@ -11,9 +13,25 @@
         </div>
     </header>
 
-    <div class="main">
-        <h3>Reset Password</h3>
-        <h3>Delete Account</h3>
+    <div class="main">  
+        <div>
+            <h3 class="delete-account-header">Delete Account</h3>
+            <p>This action cannot be undone, proceed carefully</p>
+            <button class="delete-account-btn">
+                Delete account
+            </button>
+        </div>
     </div>
+
+    <div class="delete-account-modal blocking-screen">
+        <div class="delete-account-modal-content animated-modal">
+            <div>
+                <button class="confirm-delete-btn">Confirm delete</button>
+                <button class="cancel-delete-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/build/settings.js"></script>
 </body>
 </html>
