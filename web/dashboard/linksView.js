@@ -2,6 +2,8 @@ import { ajax } from '../util.js'
 import { removeLinkConfirmed, openLinkEditor } from './modalControl.js'
 import { encodeHTML } from 'entities'
 import { state } from './state.js'
+import { Meeting } from './models.js'
+import { meetingManager } from './state.js'
 
 const container = document.querySelector('.link-container')
 const specialMessage = document.querySelector('.special-message')
@@ -20,10 +22,13 @@ async function renderLinks() {
                 } else {
                     // TODO take another at how special message is rendered when
                     // there are no links
-                    localStorage.setItem('userLinks', JSON.stringify(data.links))
-                    state.linkArray = data.links
+                    data.links
+                        .map(link => new Meeting({ ...link }))
+                        .forEach(meeting => meetingManager.add(meeting))
+                    meetingManager.emitToLocalStorage()
+                    generateHtml(meetingManager.meetings)
+
                     columnNames.style.display = 'flex'
-                    generateHtml(state.linkArray)
                 }
             })
             .catch(err => {
@@ -32,19 +37,19 @@ async function renderLinks() {
                 specialMessage.style.display = 'block'
             })
     } else {
-        state.linkArray = JSON.parse(localStorage.getItem('userLinks'))
+        meetingManager.meetings = JSON.parse(localStorage.getItem('userLinks'))
+        generateHtml(meetingManager.meetings) 
         columnNames.style.display = 'flex'
-        generateHtml(state.linkArray) 
     }
 }
 
 function generateHtml(links) {
-    links.sort((a, b) => parseInt(a.link_time) - parseInt(b.link_time))
+    links.sort((a, b) => parseInt(a.time) - parseInt(b.time))
         .map(link => getLinkMarkup(link))
         .forEach(entry => container.appendChild(entry))
 }
 
-async function addNewLink(link) {
+async function remoteUpload(link) {
     try {
         await ajax('/addNewLink', link)
     } catch(err) {
@@ -52,50 +57,56 @@ async function addNewLink(link) {
     }
 }
 
-export function updateLink({ key, 'edit-url': url, 'edit-name': name, 'edit-time': time }) {
-    state.linkArray = state.linkArray.filter(link => link.link_name != key)
-        .concat([{ link_url: url, link_name: name, link_time: time }])
-    localStorage.setItem('userLinks', JSON.stringify(state.linkArray))
+function updateLink({ key, 'edit-url': url, 'edit-name': name, 'edit-time': time }) {
+    let meeting = meetingManager.meetings.find(m => m.id === key)
+    // make this prettier
+    meeting.url = url
+    meeting.name = name
+    meeting.time = time
+    meetingManager.emitToLocalStorage()
 
     const toEdit = Array.from(container.children)
-        .find(e => e.firstElementChild.innerText == key)
+        .find(e => e.lastElementChild.className == key)
 
     toEdit.querySelector('.link-name').innerText = name
     toEdit.querySelector('.link-time').innerText = time
-    toEdit.querySelector('.link-join-button').onclick = linkOpener(url)
+    toEdit.querySelector('.link-join-button').onclick = linkOpener(key)
 }
 
-function renderNewLink(link) {
-    state.linkArray.push(link)
-    localStorage.setItem('userLinks', JSON.stringify(state.linkArray))
+function localUpload(meeting) {
+    meetingManager.add(meeting)
+    meetingManager.emitToLocalStorage()
+}
 
-    if (state.linkArray.length === 1) {
+function renderNewLink(meeting) {
+    if (meetingManager.arrSize() === 1) {
         specialMessage.style.display = 'none'
         columnNames.style.display = 'flex'
     }
 
-    const entry = getLinkMarkup(link)
+    const entry = getLinkMarkup(meeting)
     container.appendChild(entry)
 }
 
-function getLinkMarkup({ link_name, link_time, link_url }) {
+function getLinkMarkup({ name, time, url, id }) {
     const entry = document.createElement('div')
 
     entry.className = 'entry'
     entry.innerHTML = `
-        <div class="link-name">${encodeHTML(link_name)}</div>
-        <div class="link-time">${link_time}</div>
+        <div class="link-name">${encodeHTML(name)}</div>
+        <div class="link-time">${time}</div>
         <div class="link-join"><button class="link-join-button">Join</button></div>
         <div class="link-editors link-edit"><button class="link-edit-button"><img src="/images/pen.svg"></button></div>
         <div class="link-editors link-remove"><button class="link-remove-button"><img src="/images/x-circle.svg"></button></div>
+        <div class="${id}" style="display:hidden;"></div>
     `
-    entry.querySelector('.link-join-button').onclick = linkOpener(link_url)
+    entry.querySelector('.link-join-button').onclick = linkOpener(id)
     entry.querySelector('.link-remove-button').addEventListener('click', () => {
-        removeLinkConfirmed(link_name)
+        removeLinkConfirmed(name)
             .then(async (result) => {
                 if (result) {
-                    removeLocalLink(link_name)
-                    await removeRemoteLink(link_name)
+                    removeLocalLink(id)
+                    await removeRemoteLink(id)
                 }
             })
             .catch(err => {
@@ -106,21 +117,27 @@ function getLinkMarkup({ link_name, link_time, link_url }) {
     entry.querySelector('.link-edit-button').addEventListener('click', () => {
         // MAJOR ERROR: we cannot use closures here because it doesn't get updated
         // if any of these values change
-        openLinkEditor(link_name, link_url, link_time, link_name)
+        openLinkEditor({ ...meetingManager.meetings.find(m => m.id === id) })
     })
 
     return entry
 }
 
-function linkOpener(url) {
-    return () => window.open(url, '_blank')
+function linkOpener(id) {
+    let url = meetingManager.meetings
+        .find(m => m.id === id)
+        .url
+
+    return () => {
+        window.open(url, '_blank')
+    }
 }
 
-function removeLocalLink(name) {
-    state.linkArray = state.linkArray.filter(link => link.link_name != name)
-    localStorage.setItem('userLinks', JSON.stringify(state.linkArray))
+function removeLocalLink(id) {
+    meetingManager.remove(id)
+    meetingManager.emitToLocalStorage()
 
-    if (state.linkArray.length == 0) {
+    if (meetingManager.arrSize() == 0) {
         specialMessage.style.display = 'block'
         columnNames.style.display = 'none'
         specialMessage.innerText = 'It seems you don\'t have any links yet. ' + 
@@ -129,11 +146,11 @@ function removeLocalLink(name) {
 
     // TODO: innerText doesn't render whitespace on either ends so that needs to be fixed
     container.removeChild(Array.from(container.children)
-        .find(entry => entry.firstElementChild.innerText == name))
+        .find(entry => entry.lastElementChild.className == id))
 }
 
-async function removeRemoteLink(name) {
-    await ajax('/removeLink', { link_name: name })
+async function removeRemoteLink(id) {
+    await ajax('/removeLink', { id: id })
 }
 
 function renderOperationStatus(message) {
@@ -161,4 +178,5 @@ function renderOperationStatus(message) {
     document.body.insertBefore(status, specialMessage)
 }
 
-export { renderLinks, renderNewLink, addNewLink, renderOperationStatus }
+export { renderLinks, renderNewLink, remoteUpload, 
+    renderOperationStatus, localUpload, updateLink }

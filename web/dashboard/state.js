@@ -1,10 +1,11 @@
+import { MeetingManager } from './models.js'
+
 export let state =  {
 	classLink: {
-		link_url: "",
-		link_time: "",
-		link_name: ""
+		url: "",
+		time: "",
+		name: ""
 	},
-	linkArray: [],
 	editLink: {
 		'edit-name': "",
 		'edit-time': "",
@@ -13,3 +14,5 @@ export let state =  {
 		edited: false
 	}
 }
+
+export const meetingManager = new MeetingManager()

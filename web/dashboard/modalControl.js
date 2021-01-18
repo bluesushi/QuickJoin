@@ -1,7 +1,8 @@
 import { clearValues, checkLinkValid, checkDuplicateName, ajax } from '../util.js'
-import { renderNewLink, addNewLink, renderOperationStatus, updateLink } from './linksView.js'
+import { renderNewLink, remoteUpload, renderOperationStatus, updateLink, localUpload } from './linksView.js'
 import { cloneDeep } from 'lodash/lang'
-import { state } from './state.js'
+import { meetingManager, state } from './state.js'
+import { Meeting } from './models.js'
 const { classLink } = state
 
 const modalOpenButton = document.querySelector('.add_link_button')
@@ -25,18 +26,19 @@ addLinkButton.addEventListener('click', async () => {
     if (!checkLinkValid(classLink)) {
         renderOperationStatus('Link url and link name cannot be empty')
         return closeAddLinkModal()
-    } else if (checkDuplicateName(state.linkArray, classLink.link_name)) {
+    } else if (checkDuplicateName(meetingManager.meetings, classLink.name)) {
         renderOperationStatus('Link name must be unique')
         return closeAddLinkModal()
     }
 
-    if (!classLink.link_time) {
-            classLink.link_time = 'N/A'
+    if (!classLink.time) {
+        classLink.time = 'N/A'
     }
 
-    const tempLink = cloneDeep(classLink)
-    await addNewLink(tempLink)
-    renderNewLink(tempLink)
+    const meeting = new Meeting({ ...classLink })
+    localUpload(meeting)
+    await remoteUpload(meeting)
+    renderNewLink(meeting)
     closeAddLinkModal()
 })
 
@@ -78,21 +80,21 @@ editLinkInputs.forEach(input => {
     })
 })
 
-export function openLinkEditor(key, url, time, name) {
+export function openLinkEditor({ url, name, time, id }) {
     editLinkInputs.forEach(input => {
-        const id = input.id
-        if (id == 'edit-name') {
+        const inputId = input.id
+        if (inputId == 'edit-name') {
             input.value = name
-            state.editLink[id] = name
-        } else if (id == 'edit-url') {
+            state.editLink[inputId] = name
+        } else if (inputId == 'edit-url') {
             input.value = url
-            state.editLink[id] = url
+            state.editLink[inputId] = url
         } else {
             input.value = time
-            state.editLink[id] = time
+            state.editLink[inputId] = time
         }
 
-        state.editLink.key = key
+        state.editLink.key = id
     })
     editLinkModal.style.display = 'block'
 }

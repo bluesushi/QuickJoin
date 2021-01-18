@@ -19,11 +19,11 @@ export function clearValues(obj) {
         .forEach(key => obj[key] = '')
 }
 
-export function checkLinkValid({ link_url, link_name }) {
-    return link_url.length > 0 && link_name.length > 0
+export function checkLinkValid({ url, name }) {
+    return url.length > 0 && name.length > 0
 }
 
 export function checkDuplicateName(arr, name) {
-    return arr.map(link => link.link_name)
+    return arr.map(meeting => meeting.name)
         .includes(name)
 }
