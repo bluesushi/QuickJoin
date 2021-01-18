@@ -17,7 +17,7 @@ home.get('/userlinks', checkLoggedIn, async (req, res, next) => {
     }
 })
 
-home.get('/', async (req, res) => {
+home.get(['/', '/dashboard'], checkLoggedIn, async (req, res) => {
     try {
         const { rows } = await db.query('SELECT email FROM users WHERE user_id = $1', [req.session.userID])
 

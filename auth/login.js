@@ -20,7 +20,7 @@ login.post('/userlogin', async (req, res, next) => {
 
         if (await bcrypt.compare(password, rows[0].password) && rows[0].confirmed) {
             req.session.userID = rows[0].user_id 
-            res.redirect('/')
+            res.redirect('/dashboard')
         } else {
             return loginError(res)
             // TODO: return email page when they're not confirmed return res.sendFile(path.join(__dirname + '/../views/emailSent.html'))
