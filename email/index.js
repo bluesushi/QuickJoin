@@ -31,6 +31,20 @@ async function sendConfirmation({ email, code }) {
     }
 }
 
+async function sendPasswordReset(email, code) {
+    try {
+        await transporter.sendMail({
+            from: process.env.EMAILUSERNAME,
+            to: email,
+            subject: "Quick Join password reset email",
+            html: ``
+        })
+    } catch(err) {
+        throw err
+    }
+}
+
 module.exports = {
-    sendConfirmation: sendConfirmation
+    sendConfirmation,
+    sendPasswordReset
 }

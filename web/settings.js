@@ -14,10 +14,6 @@ cancelBtn.addEventListener('click', () => {
 })
 
 confirmBtn.addEventListener('click', async () => {
-    try {
-        await ajax('/deleteaccount')
-    } catch(err) {
-        console.log(err)
-    }
+    window.open('/deleteaccount')
 })
 

@@ -11,7 +11,6 @@ export async function ajax(path, data = undefined) {
     }
 
     return await fetch(path, options)
-        .then(res => res.json())
 }
 
 export function clearValues(obj) {

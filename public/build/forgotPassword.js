@@ -10,13 +10,13 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./web/settings.js":
-/*!*************************!*\
-  !*** ./web/settings.js ***!
-  \*************************/
+/***/ "./web/forgotPassword.js":
+/*!*******************************!*\
+  !*** ./web/forgotPassword.js ***!
+  \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _util_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util.js */ \"./web/util.js\");\n\n\nconst deleteAccountBtn = document.querySelector('.delete-account-btn')\nconst deleteAccountModal = document.querySelector('.delete-account-modal')\nconst cancelBtn = document.querySelector('.cancel-delete-btn')\nconst confirmBtn = document.querySelector('.confirm-delete-btn')\n\ndeleteAccountBtn.addEventListener('click', () => {\n    deleteAccountModal.style.display = 'block'\n})\n\ncancelBtn.addEventListener('click', () => {\n    deleteAccountModal.style.display = 'none'\n})\n\nconfirmBtn.addEventListener('click', async () => {\n    window.open('/deleteaccount')\n})\n\n\n\n//# sourceURL=webpack://quickjoin/./web/settings.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _util_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util.js */ \"./web/util.js\");\n\n\nconst emailInput = document.querySelector('#emailInput')\nconst passwordResetBtn = document.querySelector('.password-reset-btn')\n\npasswordResetBtn.addEventListener('click', () => {\n    ;(0,_util_js__WEBPACK_IMPORTED_MODULE_0__.ajax)('/forgotpassword', { email: emailInput.value })\n        .then(res => {\n            if (Array.from(res.headers)\n                .filter(header => header[0] == 'content-type')\n                .find(header => header[1].startsWith('text')))\n                res.text().then(html => document.write(html))\n            else\n                res.json().then(data => console.log(data))\n        })\n        .catch(err => console.error(err))\n})\n\n//# sourceURL=webpack://quickjoin/./web/forgotPassword.js?");
 
 /***/ }),
 
@@ -87,7 +87,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /************************************************************************/
 /******/ 	// startup
 /******/ 	// Load entry module
-/******/ 	__webpack_require__("./web/settings.js");
+/******/ 	__webpack_require__("./web/forgotPassword.js");
 /******/ 	// This entry module used 'exports' so it can't be inlined
 /******/ })()
 ;

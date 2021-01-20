@@ -13,6 +13,7 @@ async function renderLinks() {
     // first check if links are in localstorage
     if (!localStorage.getItem('userLinks') || localStorage.getItem('userLinks') == '[]') {
         await ajax('/userlinks')
+            .then(res => res.json())
             .then(data => {
                 if (data.message == 'no links') {
                     specialMessage.innerText = 'It seems you don\'t have any links yet. ' + 

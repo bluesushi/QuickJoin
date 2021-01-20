@@ -18,6 +18,10 @@ module.exports = {
         settings: {
             import: './web/settings.js',
             filename: '[name].js'
+        },
+        forgotPassword: {
+            import: './web/forgotPassword.js',
+            filename: '[name].js'
         }
     },
     output: {
