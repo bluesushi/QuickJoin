@@ -5,6 +5,7 @@ const pgSession = require('connect-pg-simple')(session)
 
 const login = require('./auth/login.js')
 const signup = require('./auth/signup.js')
+const password = require('./auth/password.js')
 const home = require('./dashboard/home.js')
 const settings = require('./dashboard/settings.js')
 const db = require('./db/index.js')
@@ -36,6 +37,7 @@ app.use(session(sess))
 // load routes
 app.use('/', login)
 app.use('/', signup)
+app.use('/', password)
 app.use('/', home)
 app.use('/', settings)
 
@@ -46,7 +48,6 @@ app.set('view engine', 'ejs')
 app.use(function (req, res, next) {
   res.status(404).sendFile(__dirname + '/views/notfound.html')
 })
-
 
 module.exports.store = store
 module.exports.app = app
