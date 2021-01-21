@@ -9,7 +9,7 @@ body {
 }
 
 .dashboard_header {
-    background-color: rgba(66, 138, 245, 1);
+    background-color: rgb(66, 138, 245);
     color: white;
     height: 50px;
     width: 100vw;

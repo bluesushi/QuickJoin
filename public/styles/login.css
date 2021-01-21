@@ -90,7 +90,7 @@ body {
     padding: 2px;
 }
 
-.submitbtn > button {
+.submitbtn > input {
     border: 2px solid transparent;
     outline: none;
     color: white;
@@ -100,7 +100,7 @@ body {
     cursor: pointer;
 }
 
-.submitbtn > button:hover {
+.submitbtn > input:hover {
     color: rgba(66, 138, 245, 0.8);
     border: 2px solid rgba(66, 138, 245, 0.8);
     background-color: white;

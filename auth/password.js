@@ -18,7 +18,7 @@ password.post('/forgotpassword', async (req, res, next) => {
         if (rows[0]?.exists) { // should we have the ?. check here?
             const code = nanoid()
             await db.query('UPDATE users SET forgot_code = $1 WHERE email = $2', [code, email])
-            // await sendPasswordReset(email, code)
+            await sendPasswordReset(email, code)
             return res.sendStatus(200)
         } else {
             return res.sendStatus(400)
@@ -32,13 +32,26 @@ password.post('/forgotpassword', async (req, res, next) => {
 password.get('/resetPassword/:randomToken', async (req, res, next) => {
     try {
         const { rows } = await db.query('SELECT EXISTS(SELECT 1 FROM users '
-            + 'WHERE user_id = $1 AND forgot_code = $2)', [req.session.userID, req.params.randomToken])
+            + 'WHERE forgot_code = $1)', [req.params.randomToken])
         
         if (rows[0]?.exists) {
-            return res.sendFile(path.join(__dirname, '../views/passwordReset.html'))
+            res.cookie('forgotCode', req.params.randomToken, {
+                maxAge: 8 * 3600000,
+                httpOnly: true
+            })
+            return res.render('resetPassword')
         } else {
             return res.sendStatus(403)
         }
+    } catch(err) {
+        console.log(err)
+        next(err)
+    }
+})
+
+password.post('/resetPassword', async (req, res, next) => {
+    try {
+
     } catch(err) {
         console.log(err)
         next(err)

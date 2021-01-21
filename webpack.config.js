@@ -22,6 +22,10 @@ module.exports = {
         forgotPassword: {
             import: './web/forgotPassword.js',
             filename: '[name].js'
+        },
+        resetPassword: {
+            import: './web/resetPassword.js',
+            filename: '[name].js'
         }
     },
     output: {

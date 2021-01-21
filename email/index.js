@@ -37,7 +37,16 @@ async function sendPasswordReset(email, code) {
             from: process.env.EMAILUSERNAME,
             to: email,
             subject: "Quick Join password reset email",
-            html: ``
+            html: `
+                <p>
+                    <a href="http://localhost:8080/resetPassword/${code}"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                    >
+                        Reset password
+                    </a>
+                </p>
+            `
         })
     } catch(err) {
         throw err

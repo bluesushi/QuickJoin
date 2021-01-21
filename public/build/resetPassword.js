@@ -7,9 +7,9 @@
  * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
  */
 /******/ (() => { // webpackBootstrap
-/*!**********************!*\
-  !*** ./web/login.js ***!
-  \**********************/
-eval("let btn = document.getElementById('closeErrBtn')\n\nbtn?.addEventListener('click', () => {\n    document.getElementsByClassName('loginerror')[0]?.remove()\n})\n\n//# sourceURL=webpack://quickjoin/./web/login.js?");
+/*!******************************!*\
+  !*** ./web/resetPassword.js ***!
+  \******************************/
+eval("\n\n//# sourceURL=webpack://quickjoin/./web/resetPassword.js?");
 /******/ })()
 ;

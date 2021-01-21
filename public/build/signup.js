@@ -10,6 +10,6 @@
 /*!**********************!*\
   !*** ./web/login.js ***!
   \**********************/
-eval("let btn = document.getElementById('closeErrBtn')\n\nbtn?.addEventListener('click', () => {\n    document.getElementsByClassName('loginerror')[0]?.remove()\n})\n\n\n\n//# sourceURL=webpack://quickjoin/./web/login.js?");
+eval("let btn = document.getElementById('closeErrBtn')\n\nbtn?.addEventListener('click', () => {\n    document.getElementsByClassName('loginerror')[0]?.remove()\n})\n\n//# sourceURL=webpack://quickjoin/./web/login.js?");
 /******/ })()
 ;
