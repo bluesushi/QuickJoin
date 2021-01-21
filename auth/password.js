@@ -3,6 +3,7 @@ const password = express.Router()
 
 const path = require('path')
 const { nanoid } = require('nanoid')
+const bcrypt = require('bcrypt')
 
 const db = require('../db/index.js')
 const { sendPasswordReset } = require('../email/index.js')
@@ -51,7 +52,18 @@ password.get('/resetPassword/:randomToken', async (req, res, next) => {
 
 password.post('/resetPassword', async (req, res, next) => {
     try {
+        // first, validate password
+        const { rows } = await db.query('SELECT EXISTS(SELECT 1 FROM users '
+            + 'WHERE forgot_code = $1)', [req.cookies.forgotCode])
 
+        if (rows[0].exists && req.body.newpassword === req.body.repeatpassword) {
+            const salt = await bcrypt.genSalt()
+            const hash = await bcrypt.hash(req.body.newpassword, salt)
+            await db.query('UPDATE users SET password = $1 WHERE forgot_code = $2', [hash, req.cookies.forgotCode])
+            return res.sendStatus(200)
+        } else {
+            return res.sendStatus(404)
+        }
     } catch(err) {
         console.log(err)
         next(err)
