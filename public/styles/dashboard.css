@@ -26,6 +26,11 @@ body {
     font-size: 25px;
 }
 
+.header_logo > h1 > a {
+    text-decoration: none;
+    color: white;
+}
+
 /* styling for the tool area */
 .toolarea {
     display: flex;

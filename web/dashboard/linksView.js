@@ -52,9 +52,9 @@ function generateHtml(links) {
 
 async function remoteUpload(link) {
     try {
-        await ajax('/addNewLink', link)
+        return await ajax('/addNewLink', link)
     } catch(err) {
-        renderOperationStatus('Could not upload link to database')
+        return { ok: false }
     }
 }
 

@@ -15,12 +15,13 @@ login.post('/userlogin', async (req, res, next) => {
         const { rows } = await db.query('SELECT user_id, password, confirmed FROM users WHERE email = $1', [email])
         
         if (rows.length == 0) {
-            return loginError(res)         
+            return loginError(res)     
         }
 
         if (await bcrypt.compare(password, rows[0].password) && rows[0].confirmed) {
-            req.session.userID = rows[0].user_id 
-            res.redirect('/dashboard')
+            req.session.userID = rows[0].user_id
+            req.session.email = email
+            return res.redirect('/dashboard')
         } else {
             return loginError(res)
             // TODO: return email page when they're not confirmed return res.sendFile(path.join(__dirname + '/../views/emailSent.html'))
