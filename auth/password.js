@@ -41,7 +41,7 @@ password.get('/resetPassword/:randomToken', async (req, res, next) => {
                 maxAge: 8 * 3600000,
                 httpOnly: true
             })
-            return res.render('resetPassword')
+            return res.render('resetPassword', { error: null })
         } else {
             return res.sendStatus(403)
         }
@@ -58,12 +58,21 @@ password.post('/resetPassword', async (req, res, next) => {
             + 'WHERE forgot_code = $1)', [req.cookies.forgotCode])
         const { newpassword, repeatpassword } = req.body
 
-        if (rows[0].exists && newpassword === repeatpassword && validatePassword(newpassword)) {
+        if (!rows[0].exists) {
+            return res.sendStatus(403)
+        } else if (newpassword !== repeatpassword) {
+            return res.render('resetPassword', { error: { message: 'Passwords must match' }})
+        } else if (!validatePassword(newpassword)) {
+            return res.render('resetPassword', { error: { message: `
+                Password can only include letters and numbers
+            `
+            }})
+        } else {
             const hash = await genHash(newpassword)
             await db.query('UPDATE users SET password = $1 WHERE forgot_code = $2', [hash, req.cookies.forgotCode])
-            return res.sendStatus(200)
-        } else {
-            return res.sendStatus(404)
+            await db.query('UPDATE users SET forgot_code = $1 WHERE forgot_code = $2', ['', req.cookies.forgotCode])
+            res.clearCookie('forgotCode')
+            return res.status(200).send('Password has been changed')
         }
     } catch(err) {
         console.log(err)
