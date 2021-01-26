@@ -8,9 +8,10 @@ const mail = require('../email/index.js')
 const auth = require('./auth.js')
 const { User } = require('../db/models.js')
 const { genHash } = require('../util/index.js')
+const { validatePassword } = require('../auth/validator.js')
 
 signup.get('/signup', auth.redirectDashboard, (req, res) => {
-    res.render('signup')
+    res.render('signup', { error: null })
 })
 
 signup.get('/confirmaccount/:randomToken', async (req, res, next) => {
@@ -18,7 +19,7 @@ signup.get('/confirmaccount/:randomToken', async (req, res, next) => {
         const { rows } = await db.query('UPDATE users SET confirmed = TRUE ' +
             'WHERE confirmation_code = $1 RETURNING email', [req.params.randomToken])
         if (rows.length > 0) {
-            res.sendFile(path.join(__dirname + '/../views/emailConfirmed.html'))
+            res.render('confirmed', { message: 'Email confirmed, you may sign in now' })
         } else {
             return res.send('invalid confirmation code')
         }
@@ -33,7 +34,11 @@ signup.post('/usersignup', async (req, res, next) => {
 
     try {
         if (await checkDuplicateUser(email)) { 
-            return res.render('signup')
+            return res.render('signup', { error: { message: 'User already exists' }})
+        } else if (!validatePassword(password)) {
+            return res.render('signup', { error: { message: `Password can only contain
+                letters and numbers`
+            }})
         }
 
         const hash = await genHash(password)

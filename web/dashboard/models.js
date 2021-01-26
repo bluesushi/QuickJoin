@@ -1,4 +1,4 @@
-function Meeting({ url, time, name}) {
+function Meeting({ url, time, name }) {
 	this.url = url
 	this.time = time
 	this.name = name

@@ -10,7 +10,7 @@ const { genHash } = require('../util/index.js')
 const { validatePassword } = require('./validator.js')
 
 password.get('/forgotpassword', (req, res) => {
-    return res.sendFile(path.join(__dirname, '../views/forgotPassword.html'))
+    return res.render('forgotPassword', { error: null })
 })
 
 password.post('/forgotpassword', async (req, res, next) => {
@@ -21,9 +21,9 @@ password.post('/forgotpassword', async (req, res, next) => {
             const code = nanoid()
             await db.query('UPDATE users SET forgot_code = $1 WHERE email = $2', [code, email])
             await sendPasswordReset(email, code)
-            return res.sendStatus(200)
+            return res.sendFile(path.join(__dirname, '../views/emailSent.html'))
         } else {
-            return res.sendStatus(400)
+            return res.render('forgotPassword', { error: { message: 'That email doesn\'t exist' }})
         }
     } catch(err) {
         console.log(err)
@@ -72,7 +72,7 @@ password.post('/resetPassword', async (req, res, next) => {
             await db.query('UPDATE users SET password = $1 WHERE forgot_code = $2', [hash, req.cookies.forgotCode])
             await db.query('UPDATE users SET forgot_code = $1 WHERE forgot_code = $2', ['', req.cookies.forgotCode])
             res.clearCookie('forgotCode')
-            return res.status(200).send('Password has been changed')
+            return res.render('confirmed', { message: 'Password has been successfuly changed'})
         }
     } catch(err) {
         console.log(err)

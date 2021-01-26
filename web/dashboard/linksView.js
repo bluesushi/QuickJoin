@@ -23,9 +23,10 @@ async function renderLinks() {
                 } else {
                     // TODO take another at how special message is rendered when
                     // there are no links
-                    data.links
-                        .map(link => new Meeting({ ...link }))
-                        .forEach(meeting => meetingManager.add(meeting))
+                    meetingManager.meetings = data.links
+                        .map(({ meeting_id: id, ...tail }) => {
+                            return { id, ...tail }
+                        })
                     meetingManager.emitToLocalStorage()
                     generateHtml(meetingManager.meetings)
 

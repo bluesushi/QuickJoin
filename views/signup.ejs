@@ -29,9 +29,11 @@
             </div>
         </form>
         <a href="/login">Log in</a>
+        <% if (error) { %>
+            <div class="signup-error-box">
+                <span><%= error.message %></span>
+            </div>
+        <% } %>
     </div>
-
-    <script src="https://unpkg.com/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="/scripts/signup.js" type="module"></script>
 </body>
 </html>
