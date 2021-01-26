@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const session = require('express-session')
+const cookieParser = require('cookie-parser')
 const pgSession = require('connect-pg-simple')(session)
 
 const login = require('./auth/login.js')
@@ -13,6 +14,7 @@ const db = require('./db/index.js')
 app.use(express.static('public'))
 app.use(express.json()) // check later
 app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
 
 const store = new pgSession({
     pool: db.pool,
@@ -46,7 +48,8 @@ app.set('view engine', 'ejs')
 
 // 404 handling
 app.use(function (req, res, next) {
-  res.status(404).sendFile(__dirname + '/views/notfound.html')
+  // res.status(404).sendFile(__dirname + '/views/notfound.html') send file or just status?
+  res.sendStatus(404)
 })
 
 module.exports.store = store

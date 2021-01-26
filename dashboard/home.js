@@ -18,17 +18,7 @@ home.get('/userlinks', checkLoggedIn, async (req, res, next) => {
 })
 
 home.get(['/', '/dashboard'], redirectLogin, async (req, res) => {
-    try {
-        const { rows } = await db.query('SELECT email FROM users WHERE user_id = $1', [req.session.userID])
-
-        if (rows.length == 0)
-            res.render('login', { error: null })
-        else
-            res.render('dashboard', { user: { email: rows[0].email }})
-    } catch(err) {
-        console.log(err)
-        res.render('login', { error: null })
-    }
+    return res.render('dashboard', { user: { email: req.session.email }})
 })
 
 home.post('/addnewlink', checkLoggedIn, async (req, res) => {

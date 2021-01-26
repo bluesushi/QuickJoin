@@ -3,7 +3,7 @@ const db = require('../db/index.js')
 module.exports = {
     redirectDashboard: (req, res, next) => {
         if (req.session.userID) {
-            res.redirect('/')     
+            res.redirect('/dashboard')     
         } else {
             next()
         }

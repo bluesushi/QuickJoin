@@ -23,9 +23,10 @@ async function renderLinks() {
                 } else {
                     // TODO take another at how special message is rendered when
                     // there are no links
-                    data.links
-                        .map(link => new Meeting({ ...link }))
-                        .forEach(meeting => meetingManager.add(meeting))
+                    meetingManager.meetings = data.links
+                        .map(({ meeting_id: id, ...tail }) => {
+                            return { id, ...tail }
+                        })
                     meetingManager.emitToLocalStorage()
                     generateHtml(meetingManager.meetings)
 
@@ -52,9 +53,9 @@ function generateHtml(links) {
 
 async function remoteUpload(link) {
     try {
-        await ajax('/addNewLink', link)
+        return await ajax('/addNewLink', link)
     } catch(err) {
-        renderOperationStatus('Could not upload link to database')
+        return { ok: false }
     }
 }
 

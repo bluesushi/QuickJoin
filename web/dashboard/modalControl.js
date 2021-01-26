@@ -26,9 +26,6 @@ addLinkButton.addEventListener('click', async () => {
     if (!checkLinkValid(classLink)) {
         renderOperationStatus('Link url and link name cannot be empty')
         return closeAddLinkModal()
-    } else if (checkDuplicateName(meetingManager.meetings, classLink.name)) {
-        renderOperationStatus('Link name must be unique')
-        return closeAddLinkModal()
     }
 
     if (!classLink.time) {
@@ -36,9 +33,16 @@ addLinkButton.addEventListener('click', async () => {
     }
 
     const meeting = new Meeting({ ...classLink })
-    localUpload(meeting)
-    await remoteUpload(meeting)
-    renderNewLink(meeting)
+    meetingManager.add(meeting)
+
+    const res = await remoteUpload(meeting)
+    if (res.ok) {
+        meetingManager.emitToLocalStorage()
+        renderNewLink(meeting)
+    } else {
+        meetingManager.remove(meeting.id)
+        renderOperationStatus('Could not upload link to db')
+    }
     closeAddLinkModal()
 })
 
@@ -109,9 +113,13 @@ document.querySelector('#save-edited-link')
     .addEventListener('click', async () => {
         editLinkModal.style.display = 'none'
         if (state.editLink.edited) {
-            updateLink({ ...state.editLink })
             try {
-                await ajax('/editLink', { ...state.editLink })
+                const res = await ajax('/editLink', { ...state.editLink })
+                if (res.ok) {
+                    updateLink({ ...state.editLink })
+                } else {
+                    renderOperationStatus('Could not update link in db')
+                }
             } catch(err) {
                 console.error(err)
                 renderOperationStatus('Could not update link in db')

@@ -9,7 +9,7 @@ body {
 }
 
 .dashboard_header {
-    background-color: rgba(66, 138, 245, 1);
+    background-color: rgb(66, 138, 245);
     color: white;
     height: 50px;
     width: 100vw;
@@ -23,4 +23,9 @@ body {
     margin: 0;
     margin-left: 15px;
     font-size: 25px;
+}
+
+.header_logo > h1 > a {
+    text-decoration: none;
+    color: white;
 }

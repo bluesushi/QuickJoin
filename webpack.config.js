@@ -11,16 +11,16 @@ module.exports = {
         	import: './web/login.js',
         	filename: '[name].js'
         },
-        signup: { 
-        	import: './web/login.js',
-        	filename: '[name].js'
-        },
         settings: {
             import: './web/settings.js',
             filename: '[name].js'
         },
         forgotPassword: {
             import: './web/forgotPassword.js',
+            filename: '[name].js'
+        },
+        resetPassword: {
+            import: './web/resetPassword.js',
             filename: '[name].js'
         }
     },

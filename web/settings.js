@@ -14,6 +14,6 @@ cancelBtn.addEventListener('click', () => {
 })
 
 confirmBtn.addEventListener('click', async () => {
-    window.open('/deleteaccount')
+    localStorage.clear()
+    window.open('/deleteaccount', '_self')
 })
-

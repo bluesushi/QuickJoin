@@ -16,24 +16,19 @@
                 <ul class="loginlist">
                     <li class="userinfo">
                         <label for="mail">Username or email</label>
-                        <input type="text" id="mail" name="email">
+                        <input type="text" id="mail" name="email" autocomplete="on" required>
                     </li>
                     <li class="userinfo">
                         <label for="pswd">Password <a class="forgot-pass-link" href="/forgotpassword">Forgot?</a></label>
-                        <input type="password" id="pswd" name="password">
+                        <input type="password" id="pswd" name="password" autocomplete="on" required>
                     </li>
                     <li class="submitbtn">
-                        <button type="submit">Login</button>
+                        <input type="submit" value="Login">
                     </li>
-                <li class="signuplink">
-                    <a href="/signup">No account? Sign up</a>
-                </li>
+                    <li class="signuplink">
+                        <a href="/signup">No account? Sign up</a>
+                    </li>
                 </ul>
-                <!--
-                <div class="signuplink">
-                    <a href="/signup">No account? Sign up</a>
-                </div>
-                -->
             </form>
             <% if (error) { %>
                 <div class="loginerror">
