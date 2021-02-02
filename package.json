@@ -32,7 +32,8 @@
     "nanoid": "^3.1.18",
     "nodemailer": "^6.4.16",
     "pg": "^8.5.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "eslint": "^7.17.0",
