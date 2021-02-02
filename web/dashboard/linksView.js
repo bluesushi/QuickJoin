@@ -107,8 +107,11 @@ function getLinkMarkup({ name, time, url, id }) {
         removeLinkConfirmed(name)
             .then(async (result) => {
                 if (result) {
-                    removeLocalLink(id)
-                    await removeRemoteLink(id)
+                    const res = await removeRemoteLink(id)
+                    if (res.ok)
+                        removeLocalLink(id)
+                    else
+                        renderOperationStatus('Could not remove link from db')
                 }
             })
             .catch(err => {
