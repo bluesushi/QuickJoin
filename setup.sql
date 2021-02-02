@@ -48,7 +48,7 @@ CREATE SEQUENCE public.user_id_gen
     CACHE 1;
 
 
-ALTER TABLE public.user_id_gen OWNER TO "tulayatay-turhan";
+ALTER TABLE public.user_id_gen OWNER TO "kaan";
 
 --
 -- Name: user_id_gen; Type: SEQUENCE OWNED BY; Schema: public; Owner: tulayatay-turhan
@@ -70,7 +70,7 @@ CREATE TABLE public.user_links (
 );
 
 
-ALTER TABLE public.user_links OWNER TO "tulayatay-turhan";
+ALTER TABLE public.user_links OWNER TO "kaan";
 
 --
 -- Name: user_sessions; Type: TABLE; Schema: public; Owner: tulayatay-turhan
@@ -83,44 +83,13 @@ CREATE TABLE public.user_sessions (
 );
 
 
-ALTER TABLE public.user_sessions OWNER TO "tulayatay-turhan";
+ALTER TABLE public.user_sessions OWNER TO "kaan";
 
 --
 -- Name: users user_id; Type: DEFAULT; Schema: public; Owner: tulayatay-turhan
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.user_id_gen'::regclass);
-
-
---
--- Data for Name: user_links; Type: TABLE DATA; Schema: public; Owner: tulayatay-turhan
---
-
-COPY public.user_links (user_id, url, name, "time", meeting_id) FROM stdin;
-\.
-
-
---
--- Data for Name: user_sessions; Type: TABLE DATA; Schema: public; Owner: tulayatay-turhan
---
-
-COPY public.user_sessions (sid, sess, expire) FROM stdin;
-\.
-
-
---
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: tulayatay-turhan
---
-
-COPY public.users (email, password, confirmed, confirmation_code, user_id, forgot_code) FROM stdin;
-\.
-
-
---
--- Name: user_id_gen; Type: SEQUENCE SET; Schema: public; Owner: tulayatay-turhan
---
-
-SELECT pg_catalog.setval('public.user_id_gen', 6, true);
 
 
 --
