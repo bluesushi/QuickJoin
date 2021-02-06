@@ -155,7 +155,7 @@ function removeLocalLink(id) {
 }
 
 async function removeRemoteLink(id) {
-    await ajax('/removeLink', { id: id })
+    return await ajax('/removeLink', { id: id })
 }
 
 function renderOperationStatus(message) {

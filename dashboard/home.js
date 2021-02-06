@@ -19,10 +19,16 @@ home.get(['/', '/dashboard'], redirectLogin, async (req, res) => {
 })
 
 home.post('/addnewlink', checkLoggedIn, errorControl(async (req, res) => {
-    const { url, name, time, id } = req.body 
+    const { url, name, time, id } = req.body
+    const { rows } = await db.query('SELECT COUNT(*) FROM user_links WHERE user_id = $1',
+        [req.session.userID])
+    
+    if (+rows[0].count >= 10)
+        return res.sendStatus(403)
+
     await db.query(`INSERT INTO user_links (user_id, url, name, time, meeting_id)
         VALUES ($1, $2, $3, $4, $5)`, [req.session.userID, url, name, time, id])
-    res.json({ message: 'success' })
+    return res.sendStatus('200')
 }))
 
 home.post('/removeLink', checkLoggedIn, errorControl(async (req, res) => {
