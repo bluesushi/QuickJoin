@@ -36,14 +36,6 @@ if (app.get('env') === 'production') {
 
 app.use(session(sess))
 
-app.use((req, res, next) => {
-    if (req.ip !== '::1') {
-        return res.status(403)
-    }
-    
-    next()
-})
-        
 // load routes
 app.use('/', login)
 app.use('/', signup)
