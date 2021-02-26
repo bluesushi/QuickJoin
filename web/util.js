@@ -11,10 +11,18 @@ export async function ajax(path, data = undefined) {
     }
 
     return await fetch(path, options)
-        .then(res => res.json())
 }
 
 export function clearValues(obj) {
     Object.keys(obj)
         .forEach(key => obj[key] = '')
+}
+
+export function checkLinkValid({ url, name }) {
+    return url.length > 0 && name.length > 0
+}
+
+export function checkDuplicateName(arr, name) {
+    return arr.map(meeting => meeting.name)
+        .includes(name)
 }

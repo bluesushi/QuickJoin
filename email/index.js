@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer')
 
 let transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'localhost',
     pool: true,
-    auth: {
-        user: process.env.EMAILUSERNAME,
-        pass: process.env.EMAILPASSWORD
+    port: 25,
+    tls: {
+        rejectUnauthorized: false
     }
 })
 
@@ -17,7 +17,7 @@ async function sendConfirmation({ email, code }) {
             subject: "Quick Join confirmation email",
             html: `
                 <p>
-                    <a href="http://localhost:8080/confirmaccount/${code}"
+                    <a href="http://${process.env.MYDOMAIN}/confirmaccount/${code}"
                         target="_blank"
                         rel="noreferrer noopener"
                     >
@@ -31,6 +31,29 @@ async function sendConfirmation({ email, code }) {
     }
 }
 
+async function sendPasswordReset(email, code) {
+    try {
+        await transporter.sendMail({
+            from: process.env.EMAILUSERNAME,
+            to: email,
+            subject: "Quick Join password reset email",
+            html: `
+                <p>
+                    <a href="http://${process.env.MYDOMAIN}/resetPassword/${code}"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                    >
+                        Reset password
+                    </a>
+                </p>
+            `
+        })
+    } catch(err) {
+        throw err
+    }
+}
+
 module.exports = {
-    sendConfirmation: sendConfirmation
+    sendConfirmation,
+    sendPasswordReset
 }

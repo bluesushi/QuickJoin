@@ -1,8 +1,7 @@
-function User(email, hash, code, userID) {
+function User(email, hash, code) {
     this.email = email
     this.hash = hash
-    this.code = code 
-    this.userID = userID
+    this.code = code
 }
 
 module.exports = {

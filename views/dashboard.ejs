@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="/styles/dashboard.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/genericModal.css" />
 </head>
 <body>
     <header class="dashboard_header">
         <div class="header_logo">
-            <h1>Quick Join</h1>
+            <h1><a href="/" class="main-logo">Quick Join</a></h1>
         </div>
         <div class="toolarea">
             <button class="add_link_button">
@@ -37,26 +38,33 @@
         </div>
     </header>
 
+    <p class="special-message"></p>
+
+    <div class="column-names">
+            <div><h3>Name</h3></div>
+            <div><h3>Time</h3></div>
+    </div>
+    
     <div class="link-container">
     </div>
 
-    <div class="add_link_modal">
-        <div class="modal-content">
+    <div class="add_link_modal blocking-screen">
+        <div class="modal-content animated-modal">
             <h3 style="margin:0;">Add a link</h3>
 
             <div class="modal-input">
-                <label for="link_url">Url</label>
-                <input type="url" id="link_url" required>
+                <label for="url">Url</label>
+                <input class="new-link-input" type="url" id="url" required>
             </div>
 
             <div class="modal-input">
-                <label for="link_time">Meeting Time</label>
-                <input type="time" id="link_time">
+                <label for="time">Meeting Time</label>
+                <input class="new-link-input" type="time" id="time">
             </div>
 
             <div class="modal-input">
-                <label for="link_name">Meeting Name</label>
-                <input type="text" id="link_name" maxlength="30">
+                <label for="name">Meeting Name</label>
+                <input class="new-link-input" type="text" id="name" maxlength="70">
             </div>
 
             <div class="modal-buttons">
@@ -66,16 +74,44 @@
         </div>
     </div>
 
-    <div class="remove-link-modal">
-        <div class="remove-link-modal-content">
-            <span>Remove link?</span>
+    <div class="remove-link-modal blocking-screen">
+        <div class="remove-link-modal-content animated-modal">
+            <span class="remove-link-name"></span>
             <button>Yes</button>
             <button>No</button>
         </div>
     </div>
 
+    <div class="edit-link-modal blocking-screen">
+        <div class="edit-link-modal-content animated-modal">
+            <div><h3>Edit link</h3></div>
+            <div>
+                    <label for="edit-url">Url</label>
+                    <input class="edit-link-input" type="url" id="edit-url" required>
+            </div>
+
+            <div>
+                    <label for="edit-time">Meeting Time</label>
+                    <input class="edit-link-input" type="time" id="edit-time">
+            </div>
+
+            <div>
+                    <label for="edit-name">Meeting Name</label>
+                    <input class="edit-link-input" type="text" id="edit-name" maxlength="30" required>
+            </div>
+
+            <div>
+                    <button id="save-edited-link">Save</button>
+                    <button id="close-link-editor">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!--
     <script src="/scripts/dashboard/dashboard.js" type="module"></script>
     <script src="/scripts/dashboard/modalControl.js" type="module"></script>
     <script src="/scripts/dashboard/settingsControl.js"></script>
+    -->
+    <script src="/build/bundle.js"></script>
 </body>
 </html>

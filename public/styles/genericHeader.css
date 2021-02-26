@@ -9,18 +9,23 @@ body {
 }
 
 .dashboard_header {
-    background-color: rgba(66, 138, 245, 1);
+    background-color: rgb(66, 138, 245);
     color: white;
     height: 50px;
     width: 100vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: absolute;
+    /* position: absolute; we probably don't need this */
 }
 
 .header_logo > h1 {
     margin: 0;
     margin-left: 15px;
     font-size: 25px;
+}
+
+.header_logo > h1 > a {
+    text-decoration: none;
+    color: white;
 }

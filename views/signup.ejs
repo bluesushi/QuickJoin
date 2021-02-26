@@ -22,16 +22,18 @@
             </div>
             <div>
                 <label for="password">Password</label>
-                <input name="password" type="password" id="password" required>
+                <input name="password" type="password" id="password" required minlength="8" maxlength="20">
             </div>
             <div>
                 <button type="submit" class="submitbtn">Create account</button>
             </div>
         </form>
         <a href="/login">Log in</a>
+        <% if (error) { %>
+            <div class="signup-error-box">
+                <span><%= error.message %></span>
+            </div>
+        <% } %>
     </div>
-
-    <script src="https://unpkg.com/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="/scripts/signup.js" type="module"></script>
 </body>
 </html>

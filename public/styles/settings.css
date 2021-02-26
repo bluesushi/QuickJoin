@@ -1,0 +1,37 @@
+.main {
+    margin: 0 auto;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    color: #333333;
+}
+
+.delete-account-header {
+    border-bottom: 1px solid #eaecef;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+}
+
+.delete-account-btn {
+    background-color: #fafbfc;
+    border-color: rgba(27, 31, 35, 0.15);
+    color: #d73a49;
+    border: 1px solid;
+    border-radius: 6px;
+    transition: .2s cubic-bezier(0.075, 0.82, 0.165, 1);
+    cursor: pointer;
+    padding: 5px 15px;
+    outline: none;
+}
+
+.delete-account-btn:hover {
+    color: white;
+    background-color: #d73a49;
+    border: 1px solid transparent;
+}
+
+/*
+.delete-account-modal-content {
+
+}
+*/

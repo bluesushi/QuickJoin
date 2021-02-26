@@ -5,7 +5,6 @@
 
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
 }
 
@@ -43,31 +42,13 @@ input {
     background-color: rgba(66, 138, 245, 0.9);
     height: 65%;
     font-family: 'roboto';
+    cursor: pointer;
 }
 
-/* popover warnings */
-/*
-#tooltip {
-    background-color: #333;
-    color: white;
-    padding: 5px 15px;
-    border-radius: 4px;
-    font-size: 13px;
-    position: absolute;
+.signup-error-box {
+    border-radius: 6px;
+    padding: 1em;
+    margin-top: 10px;
+    background-color: #ff9999;
+    border: 1px solid #ff7272;
 }
-
-#arrow,
-#arrow::before {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  z-index: -1;
-}
-
-#arrow::before {
-  content: '';
-  transform: rotate(45deg);
-  background: #333;
-  bottom: -8px;
-}
-*/
