@@ -1,6 +1,8 @@
 # QuickJoin
 A web app to organize online classes and easily join them
+
 Running live at: quickjoin.me
+
 Note: This project is still in development
 
 ## Motivation
