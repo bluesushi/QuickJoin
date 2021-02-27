@@ -30,7 +30,6 @@ const sess = {
 }
 
 if (app.get('env') === 'production') {
-    app.set('trust proxy', 1)
     sess.cookie.secure = true
 }
 
@@ -48,7 +47,6 @@ app.set('view engine', 'ejs')
 
 // 404 handling
 app.use(function (req, res, next) {
-  // res.status(404).sendFile(__dirname + '/views/notfound.html') send file or just status?
   res.sendStatus(404)
 })
 

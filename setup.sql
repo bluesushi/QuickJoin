@@ -1,29 +1,3 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 12.5
--- Dumped by pg_dump version 12.5
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
-SET default_tablespace = '';
-
-SET default_table_access_method = heap;
-
---
--- Name: users; Type: TABLE; Schema: public; Owner: tulayatay-turhan
---
-
 CREATE TABLE public.users (
     email character varying NOT NULL,
     password character varying NOT NULL,
@@ -33,13 +7,7 @@ CREATE TABLE public.users (
     forgot_code character varying
 );
 
-
-ALTER TABLE public.users OWNER TO "tulayatay-turhan";
-
---
--- Name: user_id_gen; Type: SEQUENCE; Schema: public; Owner: tulayatay-turhan
---
-
+-- The source for user ids
 CREATE SEQUENCE public.user_id_gen
     START WITH 1
     INCREMENT BY 1
@@ -47,19 +15,7 @@ CREATE SEQUENCE public.user_id_gen
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.user_id_gen OWNER TO "kaan";
-
---
--- Name: user_id_gen; Type: SEQUENCE OWNED BY; Schema: public; Owner: tulayatay-turhan
---
-
 ALTER SEQUENCE public.user_id_gen OWNED BY public.users.user_id;
-
-
---
--- Name: user_links; Type: TABLE; Schema: public; Owner: tulayatay-turhan
---
 
 CREATE TABLE public.user_links (
     user_id integer NOT NULL,
@@ -69,77 +25,41 @@ CREATE TABLE public.user_links (
     meeting_id smallint NOT NULL
 );
 
-
-ALTER TABLE public.user_links OWNER TO "kaan";
-
---
--- Name: user_sessions; Type: TABLE; Schema: public; Owner: tulayatay-turhan
---
-
+-- Table for user sessions to be stored
+-- These commands come from the express-session
+-- github page so that they work with the express-session
+-- npm package
 CREATE TABLE public.user_sessions (
     sid character varying NOT NULL,
     sess json NOT NULL,
     expire timestamp(6) without time zone NOT NULL
 );
 
-
-ALTER TABLE public.user_sessions OWNER TO "kaan";
-
---
--- Name: users user_id; Type: DEFAULT; Schema: public; Owner: tulayatay-turhan
---
-
+-- Generate user ids with the sequence that was created
 ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.user_id_gen'::regclass);
 
-
---
--- Name: users must_be_different; Type: CONSTRAINT; Schema: public; Owner: tulayatay-turhan
---
-
+-- Users are differentiated by their emails
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT must_be_different UNIQUE (email);
 
-
---
--- Name: user_sessions session_pkey; Type: CONSTRAINT; Schema: public; Owner: tulayatay-turhan
---
-
+-- Command from express-session github
 ALTER TABLE ONLY public.user_sessions
     ADD CONSTRAINT session_pkey PRIMARY KEY (sid);
 
-
---
--- Name: users users_confirmation_code_key; Type: CONSTRAINT; Schema: public; Owner: tulayatay-turhan
---
-
+-- Make sure confirmation keys are unique as well
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_confirmation_code_key UNIQUE (confirmation_code);
 
-
---
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: tulayatay-turhan
---
-
+-- Make user id a primary key
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
 
-
---
--- Name: IDX_session_expire; Type: INDEX; Schema: public; Owner: tulayatay-turhan
---
-
+-- Command from express-session github
 CREATE INDEX "IDX_session_expire" ON public.user_sessions USING btree (expire);
 
-
---
--- Name: user_links user_links_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: tulayatay-turhan
---
-
+-- This constrainst makes sure when adding a new
+-- user link that the individual exists first. 
+-- Delete cascade ensures that when a user deletes their
+-- account their links are automatically purged as well
 ALTER TABLE ONLY public.user_links
     ADD CONSTRAINT user_links_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id) ON DELETE CASCADE;
-
-
---
--- PostgreSQL database dump complete
---
-
