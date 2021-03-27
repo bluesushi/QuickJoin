@@ -3,8 +3,6 @@ A web app to organize online classes and easily join them
 
 Running live at: quickjoin.me
 
-Note: This project is still in development
-
 ## Motivation
 Navigating to a your schools site everytime to join an online
 class can become repetitive and annoying, so I developed this
